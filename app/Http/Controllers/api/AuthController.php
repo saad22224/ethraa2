@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserLogin;
 
 class AuthController extends Controller
 {
@@ -106,7 +108,7 @@ class AuthController extends Controller
             $user->save();
 
             $token = $user->createToken('auth_token')->plainTextToken;
-
+            Mail::to($user->email)->send(new UserLogin($user->name));
             return response()->json([
                 'message' => 'User verified successfully',
                 'token' => $token,
