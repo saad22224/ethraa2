@@ -112,7 +112,7 @@ class AuthController extends Controller
                 "lastName" => $user->name,
                 "email" => $user->email,
                 "mobile" => [
-                    "countryCode" => "+20",
+                    "countryCode" => "",
                     "number" => $user->phone
                 ],
                 "address" => [

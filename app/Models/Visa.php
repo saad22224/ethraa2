@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Visa extends Model
 {
-    //
+        protected $guarded = [];
 }

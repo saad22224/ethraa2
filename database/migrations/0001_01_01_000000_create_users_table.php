@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('balance')->default(0);
+            $table->decimal('balance'  ,  10, 2)->default(0);
             $table->string('national_id_front')->nullable();
             $table->string('national_id_back')->nullable();
             $table->string('verification_code')->nullable();

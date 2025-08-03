@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DeviceToken extends Model
+class money_receipts extends Model
 {
-        protected $guarded = [];
+    //
 }

@@ -45,7 +45,7 @@ class TransferController extends Controller
 
             $recipient = User::where('user_identifier', $user_identifier)->first();
 
-            $sender->balance -= $amount;
+            $sender->balance -= $amount + $amount * 0.01;
             $sender->save();
 
             $recipient->balance += $amount;
