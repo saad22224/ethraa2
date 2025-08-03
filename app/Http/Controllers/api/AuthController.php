@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserLogin;
+use App\Models\DeviceToken;
 
 class AuthController extends Controller
 {
@@ -223,5 +224,31 @@ class AuthController extends Controller
             'token' => $token,
             'user' => $user
         ], 200);
+    }
+
+
+     public function deviceToken(Request $request)
+    {
+        $request->validate([
+            'device_token' => 'required|string',
+        ]);
+
+        $user = auth()->user();
+
+        if(!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not authenticated',
+            ], 401);
+        }
+      DeviceToken::updateOrCreate(
+            ['user_id' => $user->id],
+            ['device_token' => $request->device_token]
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Device token saved successfully',
+        ]);
     }
 }

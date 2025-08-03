@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::post('/me', [AuthController::class, 'me']);
+    Route::post('/deviceToken', [AuthController::class, 'deviceToken']);
     Route::post('/send-ticket', [TicketController::class, 'send']);
     Route::post('/transfer', [TransferController::class, 'transfer']);
 });

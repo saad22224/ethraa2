@@ -4,20 +4,85 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\TransferService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class TransferController extends Controller
 {
-    public function transfer(Request $request)
+    public function transfer(Request $request, TransferService $service)
     {
-        $user_identifier = $request->user_identifier;
-        $amount = $request->amount;
-        $sender = auth()->user();
-        $sender->balance -= $amount;
-        $sender->save();
-        $recipient = User::where('user_identifier', $user_identifier)->first();
-        $recipient->balance += $amount;
-        $recipient->save();
-        return response()->json(['message' => 'Transfer successful']);
+        try {
+            // ✅ تحقق من البيانات
+            $request->validate([
+                'user_identifier' => 'required|string|exists:users,user_identifier',
+                'amount' => 'required|numeric|min:0.01'
+            ]);
+
+            $user_identifier = $request->user_identifier;
+            $amount = $request->amount;
+            $sender = auth()->user();
+
+            Log::info('Transfer initiated', [
+                'from_user_id' => $sender->id,
+                'to_user_identifier' => $user_identifier,
+                'amount' => $amount
+            ]);
+
+            // ✅ تأكد من أن الرصيد كافي
+            if ($sender->balance < $amount) {
+                Log::warning('Insufficient balance', [
+                    'user_id' => $sender->id,
+                    'balance' => $sender->balance,
+                    'attempted_amount' => $amount
+                ]);
+                return response()->json(['error' => 'Insufficient balance'], 400);
+            }
+
+            // ✅ تنفيذ العملية داخل transaction
+            DB::beginTransaction();
+
+            $recipient = User::where('user_identifier', $user_identifier)->first();
+
+            $sender->balance -= $amount;
+            $sender->save();
+
+            $recipient->balance += $amount;
+            $recipient->save();
+
+            DB::commit();
+
+            Log::info('Transfer successful', [
+                'from_user' => $sender->id,
+                'to_user' => $recipient->id,
+                'amount' => $amount
+            ]);
+
+            // ✅ إرسال الإشعار – لو لسه هتست فايربيز، بس سجل المحاولة
+            try {
+                $service->sendNotification(
+                    $recipient->id,
+                    "لقد تلقيت مدفوعات بقيمة {$amount} من {$sender->name}"
+                );
+                Log::info('Notification sent', [
+                    'to_user_id' => $recipient->id
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Failed to send notification', [
+                    'to_user_id' => $recipient->id,
+                    'error' => $e->getMessage()
+                ]);
+            }
+
+            return response()->json(['message' => 'Transfer successful']);
+        } catch (\Exception $e) {
+            DB::rollBack(); // لو في خطأ وسط الترانزاكشن
+            Log::error('Transfer failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id()
+            ]);
+            return response()->json(['error' => 'Transfer failed'], 500);
+        }
     }
 }
