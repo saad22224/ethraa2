@@ -29,6 +29,7 @@ Route::post('/resendverificationcode', [AuthController::class, 'resendVerificati
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/me', [AuthController::class, 'me']);
     Route::post('/send-ticket', [TicketController::class, 'send']);
-
 });
