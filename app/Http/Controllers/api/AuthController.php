@@ -97,8 +97,8 @@ class AuthController extends Controller
                 return response()->json(['error' => 'الكود غير صحيح أو البريد غير موجود.'], 400);
             }
 
-            // $user->is_verified = true;
-            // $user->verification_code = null;
+            $user->is_verified = true;
+            $user->verification_code = null;
 
             // ✅ إنشاء عميل في Striga
             // داخل الفنكشن مباشرة قبل الـ request
