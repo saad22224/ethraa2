@@ -77,6 +77,7 @@ class AuthController extends Controller
         }
     }
 
+
     public function verifyCode(Request $request)
     {
         try {
@@ -85,42 +86,84 @@ class AuthController extends Controller
                 'code' => 'required|string',
             ]);
 
-
             $email = trim($request->email);
             $code = trim($request->code);
-
-            \Log::info('Verifying user', ['email' => $email, 'code' => $code]);
 
             $user = User::where('email', $email)
                 ->where('verification_code', $code)
                 ->first();
 
             if (!$user) {
-                \Log::warning('Verification failed', [
-                    'email' => $email,
-                    'code' => $code,
-                    'user_found_with_email' => User::where('email', $email)->first(),
-                ]);
                 return response()->json(['error' => 'الكود غير صحيح أو البريد غير موجود.'], 400);
             }
 
-            $user->is_verified = true;
-            $user->verification_code = null;
+            // $user->is_verified = true;
+            // $user->verification_code = null;
+
+            // ✅ إنشاء عميل في Striga
+            // داخل الفنكشن مباشرة قبل الـ request
+            $secret = env('STRIGA_SECRET');
+            $apiKey = env('STRIGA_API_KEY');
+            $method = 'POST';
+            $endpoint = '/user/create';
+
+            $body = [
+                "firstName" => $user->name,
+                "lastName" => $user->name,
+                "email" => $user->email,
+                "mobile" => [
+                    "countryCode" => "+20",
+                    "number" => $user->phone
+                ],
+                "address" => [
+                    "addressLine1" => "Test Street",
+                    "city" => "Cairo",
+                    "country" => "EG",
+                    "postalCode" => "12345"
+                ]
+            ];
+
+            $timestamp = (string) round(microtime(true) * 1000); // مللي ثانية
+            $bodyHash = md5(json_encode($body));
+
+            $stringToSign = $timestamp . $method . $endpoint . $bodyHash;
+            $signature = hash_hmac('sha256', $stringToSign, $secret);
+            $authorizationHeader = 'HMAC ' . $timestamp . ':' . $signature;
+
+            $response = Http::withHeaders([
+                'Authorization' => $authorizationHeader,
+                'api-key' => $apiKey,
+                'Content-Type' => 'application/json',
+            ])->post('https://www.sandbox.striga.com/api/v1' . $endpoint, $body);
+
+            \Log::info("Generated timestamp: {$timestamp}");
+            \Log::info("Authorization: {$authorizationHeader}");
+            \Log::info("Response: " . $response);
+
+
+
+            $customer_id = $response->json('userId');
+
+            $user->striga_customer_id = $customer_id;
+
+
             $user->save();
 
             $token = $user->createToken('auth_token')->plainTextToken;
-            Mail::to($user->email)->send(new UserLogin($user->name));
+
             return response()->json([
-                'message' => 'User verified successfully',
+                'message' => 'User verified and registered on Striga',
                 'token' => $token,
                 'user' => $user
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => $e->getMessage(),
+                'message' => 'حدث خطأ داخلي',
+                'error' => $e->getMessage(),
             ], 400);
         }
     }
+
 
 
 
@@ -227,7 +270,7 @@ class AuthController extends Controller
     }
 
 
-     public function deviceToken(Request $request)
+    public function deviceToken(Request $request)
     {
         $request->validate([
             'device_token' => 'required|string',
@@ -235,13 +278,13 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        if(!$user) {
+        if (!$user) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'User not authenticated',
             ], 401);
         }
-      DeviceToken::updateOrCreate(
+        DeviceToken::updateOrCreate(
             ['user_id' => $user->id],
             ['device_token' => $request->device_token]
         );

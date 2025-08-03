@@ -11,6 +11,11 @@ Route::get('/', function () {
 // require __DIR__.'/api.php';
 
 
+Route::get('/time', function () {
+    return now('UTC')->toDateTimeString();
+});
+
+
 
 Route::get('/test-mail', function () {
     Mail::raw('Hello from test!', function ($message) {
