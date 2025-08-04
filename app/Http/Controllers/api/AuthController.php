@@ -150,12 +150,35 @@ class AuthController extends Controller
 
 
 
+            // ⚠️ بدء عملية KYC بعد إنشاء المستخدم
+            $kyc_endpoint = '/user/kyc/start';
+            $kyc_body = [
+                "userId" => $customer_id
+            ];
+
+            $kyc_timestamp = (string) round(microtime(true) * 1000);
+            $kyc_bodyHash = md5(json_encode($kyc_body));
+            $kyc_stringToSign = $kyc_timestamp . 'POST' . $kyc_endpoint . $kyc_bodyHash;
+            $kyc_signature = hash_hmac('sha256', $kyc_stringToSign, $secret);
+            $kyc_authorizationHeader = 'HMAC ' . $kyc_timestamp . ':' . $kyc_signature;
+
+            $kyc_response = Http::withHeaders([
+                'Authorization' => $kyc_authorizationHeader,
+                'api-key' => $apiKey,
+                'Content-Type' => 'application/json',
+            ])->post('https://www.sandbox.striga.com/server/api/v0' . $kyc_endpoint, $kyc_body);
+
+            \Log::info("KYC Response: " . $kyc_response->body());
+            $user->kyc_verification_link = $kyc_response->json('verificationLink');
+
+
             $user->save();
 
             $token = $user->createToken('auth_token')->plainTextToken;
-
+$verificationLink = $user->kyc_verification_link;
             return response()->json([
                 'message' => 'User verified and registered on Striga',
+                'kyc_link' => $verificationLink,
                 'token' => $token,
                 'user' => $user
             ], 201);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\CardController;
 use App\Http\Controllers\api\TicketController;
 use App\Http\Controllers\api\TransactionController;
 use App\Http\Controllers\api\TransferController;
@@ -37,4 +38,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/send-ticket', [TicketController::class, 'send']);
     Route::post('/transfer', [TransferController::class, 'transfer']);
     Route::post('/transaction', [TransactionController::class, 'transaction']);
+    Route::post('/create-card', [CardController::class, 'createCard']);
 });

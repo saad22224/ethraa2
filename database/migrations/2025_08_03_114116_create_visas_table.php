@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('visas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('card_number');
-            $table->string('cvv');
+            $table->string('card_id'); // ID الخاص بالبطاقة من Striga
+            $table->string('masked_pan'); // رقم البطاقة المخفي
+            $table->string('last4'); // آخر 4 أرقام
             $table->string('expiry_month');
             $table->string('expiry_year');
+            $table->string('currency')->default('EUR');
+            $table->string('status')->default('PENDING'); // ACTIVE, BLOCKED, etc.
+
             $table->timestamps();
         });
     }
