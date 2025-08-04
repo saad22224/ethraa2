@@ -11,17 +11,24 @@ Route::get('/', function () {
 // require __DIR__.'/api.php';
 
 
-Route::get('/time', function () {
-    return now('UTC')->toDateTimeString();
+// Route::get('/time', function () {
+//     return now('UTC')->toDateTimeString();
+// });
+
+
+
+// Route::get('/test-mail', function () {
+//     Mail::raw('Hello from test!', function ($message) {
+//         $message->to('test@example.com')
+//                 ->subject('Test Mail');
+//     });
+
+//     return 'Mail sent!';
+// });
+
+
+Route::get('/admin' , function(){
+    return view('login');
 });
-
-
-
-Route::get('/test-mail', function () {
-    Mail::raw('Hello from test!', function ($message) {
-        $message->to('test@example.com')
-                ->subject('Test Mail');
-    });
-
-    return 'Mail sent!';
-});
+Route::post('/admin/login' , [App\Http\Controllers\AdminAuth::class , 'login'])
+->name('admin.login');
