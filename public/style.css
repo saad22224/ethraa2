@@ -173,7 +173,7 @@ body {
 
 /* صفحات المحتوى */
 .page-content {
-    display: none;
+    /* display: none; */
     padding: 2rem;
     animation: fadeIn 0.3s ease;
 }

@@ -27,6 +27,7 @@ class User extends Authenticatable
         'national_id_front',
         'national_id_back',
         'user_identifier',
+        'type',
     ];
 
     /**

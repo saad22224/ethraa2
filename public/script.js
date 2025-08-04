@@ -236,24 +236,24 @@ function updateTime() {
 setInterval(updateTime, 60000);
 
 // معالجة إرسال النماذج (يمكن تخصيصها حسب الحاجة)
-document.addEventListener('submit', function(e) {
-    e.preventDefault();
+// document.addEventListener('submit', function(e) {
+//     e.preventDefault();
     
-    const form = e.target;
-    const formData = new FormData(form);
+//     const form = e.target;
+//     const formData = new FormData(form);
     
-    // هنا يمكن إرسال البيانات إلى الخادم
-    console.log('إرسال البيانات:', Object.fromEntries(formData));
+//     // هنا يمكن إرسال البيانات إلى الخادم
+//     console.log('إرسال البيانات:', Object.fromEntries(formData));
     
-    // إغلاق النافذة المنبثقة
-    const modal = form.closest('.modal');
-    if (modal) {
-        closeModal(modal.id);
-    }
+//     // إغلاق النافذة المنبثقة
+//     const modal = form.closest('.modal');
+//     if (modal) {
+//         closeModal(modal.id);
+//     }
     
-    // عرض رسالة نجاح
-    showSuccessMessage('تم حفظ البيانات بنجاح');
-});
+//     // عرض رسالة نجاح
+//     showSuccessMessage('تم حفظ البيانات بنجاح');
+// });
 
 // عرض رسائل النجاح
 function showSuccessMessage(message) {

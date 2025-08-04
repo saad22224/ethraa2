@@ -30,5 +30,12 @@ Route::get('/', function () {
 Route::get('/admin' , function(){
     return view('login');
 });
+Route::get('/admin/dashboard' , [App\Http\Controllers\Dashboard::class , 'index'])
+->name('admin.dashboard');
 Route::post('/admin/login' , [App\Http\Controllers\AdminAuth::class , 'login'])
 ->name('admin.login');
+
+Route::get('/users' , [App\Http\Controllers\UsersController::class , 'index'])
+->name('users');
+Route::put('/users/update/{id}' , [App\Http\Controllers\UsersController::class , 'update'])
+->name('users.update');

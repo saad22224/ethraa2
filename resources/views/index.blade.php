@@ -1,72 +1,23 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم الإدارية</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <!-- الشريط الجانبي -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>لوحة التحكم</span>
-            </div>
-            <button class="sidebar-toggle" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-        
-        <ul class="sidebar-menu">
-            <li class="menu-item active" data-page="dashboard">
-                <a href="#" class="menu-link">
-                    <i class="fas fa-home"></i>
-                    <span>الإحصائيات</span>
-                </a>
-            </li>
-            <li class="menu-item" data-page="users">
-                <a href="#" class="menu-link">
-                    <i class="fas fa-users"></i>
-                    <span>المستخدمين</span>
-                </a>
-            </li>
-            <li class="menu-item" data-page="transfers">
-                <a href="#" class="menu-link">
-                    <i class="fas fa-exchange-alt"></i>
-                    <span>التحويلات</span>
-                </a>
-            </li>
-            <li class="menu-item" data-page="offices">
-                <a href="#" class="menu-link">
-                    <i class="fas fa-building"></i>
-                    <span>مكاتب التحويل</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    @include('sidebar')
 
     <!-- المحتوى الرئيسي -->
     <main class="main-content">
         <!-- الهيدر العلوي -->
-        <header class="top-header">
-            <div class="header-left">
-                <h1 id="pageTitle">الإحصائيات</h1>
-            </div>
-            <div class="header-right">
-                <div class="user-info">
-                    <span>مرحباً، المدير</span>
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <button class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>تسجيل الخروج</span>
-                </button>
-            </div>
-        </header>
+        @include('header')
 
         <!-- صفحة الإحصائيات -->
         <div class="page-content active" id="dashboard">
@@ -80,7 +31,7 @@
                         <p class="stat-number">1,254</p>
                     </div>
                 </div>
-                
+
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-wallet"></i>
@@ -90,7 +41,7 @@
                         <p class="stat-number">$45,678</p>
                     </div>
                 </div>
-                
+
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-arrow-down"></i>
@@ -100,7 +51,7 @@
                         <p class="stat-number">$12,345</p>
                     </div>
                 </div>
-                
+
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-exchange-alt"></i>
@@ -110,7 +61,7 @@
                         <p class="stat-number">89</p>
                     </div>
                 </div>
-                
+
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-building"></i>
@@ -120,7 +71,7 @@
                         <p class="stat-number">156</p>
                     </div>
                 </div>
-                
+
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-chart-line"></i>
@@ -131,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="recent-activity">
                 <h2>النشاطات الأخيرة</h2>
                 <div class="activity-list">
@@ -155,91 +106,7 @@
         </div>
 
         <!-- صفحة المستخدمين -->
-        <div class="page-content" id="users">
-            <div class="page-header">
-                <h2>إدارة المستخدمين</h2>
-                <button class="btn btn-primary" onclick="showAddUserModal()">
-                    <i class="fas fa-plus"></i>
-                    إضافة مستخدم
-                </button>
-            </div>
-            
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="البحث في المستخدمين..." id="userSearch">
-            </div>
-            
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>الاسم</th>
-                            <th>البريد الإلكتروني</th>
-                            <th>الرصيد</th>
-                            <th>تاريخ التسجيل</th>
-                            <th>الحالة</th>
-                            <th>الإجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody">
-                        <tr>
-                            <td>أحمد محمد</td>
-                            <td>ahmed@example.com</td>
-                            <td>$1,250</td>
-                            <td>2024-01-15</td>
-                            <td><span class="status active">نشط</span></td>
-                            <td>
-                                <button class="btn-action edit" onclick="showEditUserModal(1)">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-action balance" onclick="showAddBalanceModal(1)">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button class="btn-action delete" onclick="deleteUser(1)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>سارة أحمد</td>
-                            <td>sara@example.com</td>
-                            <td>$850</td>
-                            <td>2024-01-10</td>
-                            <td><span class="status active">نشط</span></td>
-                            <td>
-                                <button class="btn-action edit" onclick="showEditUserModal(2)">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-action balance" onclick="showAddBalanceModal(2)">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button class="btn-action delete" onclick="deleteUser(2)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>محمد علي</td>
-                            <td>mohamed@example.com</td>
-                            <td>$0</td>
-                            <td>2024-01-08</td>
-                            <td><span class="status inactive">غير نشط</span></td>
-                            <td>
-                                <button class="btn-action edit" onclick="showEditUserModal(3)">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-action balance" onclick="showAddBalanceModal(3)">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button class="btn-action delete" onclick="deleteUser(3)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    
 
         <!-- صفحة التحويلات -->
         <div class="page-content" id="transfers">
@@ -250,12 +117,12 @@
                     إضافة تحويل
                 </button>
             </div>
-            
+
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" placeholder="البحث في التحويلات..." id="transferSearch">
             </div>
-            
+
             <div class="table-container">
                 <table class="data-table">
                     <thead>
@@ -315,12 +182,12 @@
                     إضافة مكتب
                 </button>
             </div>
-            
+
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" placeholder="البحث في المكاتب..." id="officeSearch">
             </div>
-            
+
             <div class="offices-grid" id="officesGrid">
                 <div class="office-card">
                     <div class="office-header">
@@ -340,7 +207,7 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="office-card">
                     <div class="office-header">
                         <h3>مكتب الخليج</h3>
@@ -359,7 +226,7 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="office-card">
                     <div class="office-header">
                         <h3>مكتب الإمارات</h3>
@@ -383,113 +250,9 @@
     </main>
 
     <!-- النوافذ المنبثقة -->
-    
+
     <!-- نافذة إضافة مستخدم -->
-    <div class="modal" id="addUserModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>إضافة مستخدم جديد</h3>
-                <button class="modal-close" onclick="closeModal('addUserModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label>الاسم الكامل</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>البريد الإلكتروني</label>
-                        <input type="email" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>كلمة المرور</label>
-                        <input type="password" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>الرصيد الأولي</label>
-                        <input type="number" class="form-control" value="0">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('addUserModal')">إلغاء</button>
-                <button class="btn btn-primary">إضافة</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- نافذة تعديل مستخدم -->
-    <div class="modal" id="editUserModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>تعديل المستخدم</h3>
-                <button class="modal-close" onclick="closeModal('editUserModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label>الاسم الكامل</label>
-                        <input type="text" class="form-control" value="أحمد محمد">
-                    </div>
-                    <div class="form-group">
-                        <label>البريد الإلكتروني</label>
-                        <input type="email" class="form-control" value="ahmed@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label>الحالة</label>
-                        <select class="form-control">
-                            <option value="active">نشط</option>
-                            <option value="inactive">غير نشط</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('editUserModal')">إلغاء</button>
-                <button class="btn btn-primary">حفظ التغييرات</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة إضافة رصيد -->
-    <div class="modal" id="addBalanceModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>إضافة رصيد</h3>
-                <button class="modal-close" onclick="closeModal('addBalanceModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label>المستخدم</label>
-                        <input type="text" class="form-control" value="أحمد محمد" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>الرصيد الحالي</label>
-                        <input type="text" class="form-control" value="$1,250" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>المبلغ المضاف</label>
-                        <input type="number" class="form-control" placeholder="أدخل المبلغ" required>
-                    </div>
-                    <div class="form-group">
-                        <label>ملاحظات</label>
-                        <textarea class="form-control" placeholder="ملاحظات اختيارية"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('addBalanceModal')">إلغاء</button>
-                <button class="btn btn-primary">إضافة الرصيد</button>
-            </div>
-        </div>
-    </div>
 
     <!-- نافذة إضافة تحويل -->
     <div class="modal" id="addTransferModal">
@@ -585,6 +348,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="{{ asset('script.js') }}"></script>
 </body>
+
 </html>
