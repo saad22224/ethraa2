@@ -37,6 +37,8 @@
                 <table class="data-table">
                     <thead>
                         <tr>
+                            <th>صورة الهوية الامامية</th>
+                            <th>صورة الهوية الخلفية</th>
                             <th>الاسم</th>
                             <th>البريد الإلكتروني</th>
                             <th>الرصيد</th>
@@ -48,25 +50,45 @@
                     <tbody id="usersTableBody">
                         @foreach ($users as $user)
                             <tr>
+                                <td>
+                                    <img src="{{ asset($user->national_id_front) }}" alt="صورة الهوية الأمامية"
+                                        style="width: 120px; height: auto; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);">
+                                </td>
+                                <td>
+                                    <img src="{{ asset($user->national_id_back) }}" alt="صورة الهوية الخلفية"
+                                        style="width: 120px; height: auto; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);">
+                                </td>
+
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->balance }}</td>
                                 <td>{{ $user->created_at }}</td>
                                 {{-- <td><span class="status active">نشط</span></td> --}}
                                 <td>
-                                    <button class="btn-action edit" onclick="showEditUserModal(1)">
+                                    <button class="btn-action edit"
+                                        onclick="showEditUserModal(
+        {{ $user->id }}, 
+        '{{ addslashes($user->name) }}', 
+        '{{ addslashes($user->email) }}'
+    )">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn-action balance" onclick="showAddBalanceModal(1)">
+
+                                    <button class="btn-action balance"
+                                        onclick="showAddBalanceModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ $user->balance }}')">
                                         <i class="fas fa-plus"></i>
                                     </button>
-                                    <button class="btn-action delete" onclick="deleteUser(1)">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    <form action="{{ route('users.delete', $user->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn-action delete" onclick="deleteUser(1)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
-                     
-                        
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -96,28 +118,34 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="{{ route('users.store') }}" method="POST">
+                        @csrf
                         <div class="form-group">
                             <label>الاسم الكامل</label>
-                            <input type="text" class="form-control" required>
+                            <input name="name" type="text" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>البريد الإلكتروني</label>
-                            <input type="email" class="form-control" required>
+                            <input name="email" type="email" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>كلمة المرور</label>
-                            <input type="password" class="form-control" required>
+                            <input name="password" type="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label> رقم الهاتف</label>
+                            <input name="phone" type="number" class="form-control" value="0">
                         </div>
                         <div class="form-group">
                             <label>الرصيد الأولي</label>
-                            <input type="number" class="form-control" value="0">
+                            <input name="balance" type="number" class="form-control" value="0">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary"
+                                onclick="closeModal('addUserModal')">إلغاء</button>
+                            <button class="btn btn-primary">إضافة</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="closeModal('addUserModal')">إلغاء</button>
-                    <button class="btn btn-primary">إضافة</button>
                 </div>
             </div>
         </div>
@@ -132,25 +160,25 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('users.update', $user->id) }}" method="POST">
+                    <form method="POST" action="">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
                             <label>الاسم الكامل</label>
-                            <input name="name" value="{{ $user->name }}"  type="text" class="form-control" value="أحمد محمد">
+                            <input name="name" type="text" class="form-control" value="أحمد محمد">
                         </div>
                         <div class="form-group">
                             <label>البريد الإلكتروني</label>
-                            <input name="email" value="{{ $user->email }}" type="email" class="form-control">
+                            <input name="email" readonly type="email" class="form-control">
                         </div>
                         <div class="form-group">
                             <label> كلمة السر</label>
-                            <input name="password" type="password" class="form-control" >
+                            <input name="password" type="password" class="form-control">
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" onclick="closeModal('editUserModal')">إلغاء</button>
-                        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('editUserModal')">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
                     </form>
                 </div>
             </div>
@@ -166,32 +194,32 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form method="POST" action="">
+                        @csrf
+                        @method('PUT')
                         <div class="form-group">
                             <label>المستخدم</label>
-                            <input type="text" class="form-control" value="أحمد محمد" readonly>
+                            <input type="text" class="form-control user-name" readonly>
                         </div>
                         <div class="form-group">
                             <label>الرصيد الحالي</label>
-                            <input type="text" class="form-control" value="$1,250" readonly>
+                            <input type="text" class="form-control user-balance" readonly>
                         </div>
                         <div class="form-group">
                             <label>المبلغ المضاف</label>
-                            <input type="number" class="form-control" placeholder="أدخل المبلغ" required>
+                            <input name="amount" type="number" class="form-control" placeholder="أدخل المبلغ"
+                                required>
                         </div>
-                        <div class="form-group">
-                            <label>ملاحظات</label>
-                            <textarea class="form-control" placeholder="ملاحظات اختيارية"></textarea>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="closeModal('addBalanceModal')">إلغاء</button>
+                            <button type="submit" class="btn btn-primary">إضافة الرصيد</button>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="closeModal('addBalanceModal')">إلغاء</button>
-                    <button class="btn btn-primary">إضافة الرصيد</button>
-                </div>
             </div>
         </div>
-           @endforeach
+
+
     </main>
 
 

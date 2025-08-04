@@ -39,3 +39,10 @@ Route::get('/users' , [App\Http\Controllers\UsersController::class , 'index'])
 ->name('users');
 Route::put('/users/update/{id}' , [App\Http\Controllers\UsersController::class , 'update'])
 ->name('users.update');
+Route::put('/users/addbalance/{id}' , [App\Http\Controllers\UsersController::class , 'addbalance'])
+->name('users.addbalance');
+Route::post('/users/store' , [App\Http\Controllers\UsersController::class , 'store'])
+->name('users.store');
+Route::delete('/users/delete/{id}' , [App\Http\Controllers\UsersController::class
+ , 'delete'])
+->name('users.delete');

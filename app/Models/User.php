@@ -28,6 +28,8 @@ class User extends Authenticatable
         'national_id_back',
         'user_identifier',
         'type',
+        'striga_customer_id',
+        'country_code',
     ];
 
     /**

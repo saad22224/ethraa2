@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'user_identifier' => '123456789',
             'phone' => '123456789',
+            'country_code' => '966',
             'password' => bcrypt('12345678'),
             'type' => 'admin',
         ]);

@@ -1,7 +1,13 @@
         <header class="top-header">
+            <!-- زر إظهار/إخفاء الشريط الجانبي -->
+
+
             <div class="header-left">
                 <h1 id="pageTitle">الإحصائيات</h1>
             </div>
+            {{-- <button id="toggleSidebarBtn" class="sidebar-toggle-btn">
+    <i class="fas fa-angle-double-right"></i>
+</button> --}}
             <div class="header-right">
                 <div class="user-info">
                     <span>مرحباً، المدير</span>

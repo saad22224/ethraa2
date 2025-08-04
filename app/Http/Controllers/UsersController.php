@@ -12,16 +12,36 @@ class UsersController extends Controller
         $users = User::where('type', 'user')->get();
         return view('users', compact('users'));
     }
-    public function update(Request $request, $id)
+
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
+            'phone' => 'required|numeric',
+            'password' => 'required',
         ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => bcrypt($request->password),
+            'balance' => $request->balance,
+        ]);
+
+        return redirect()->route('users')->with('success', 'User created successfully');
+    }
+    public function update(Request $request, $id)
+    {
+        // $request->validate([
+        //     'name' => 'required',
+        //     'email' => 'required|email|unique:users,email,' . $id,
+        // ]);
 
         $user = User::findOrFail($id);
         $user->name = $request->name;
-        $user->email = $request->email;
+        // $user->email = $request->email;
 
         // فقط حدث الباسورد لو مبعوتة
         if ($request->filled('password')) {
@@ -31,5 +51,23 @@ class UsersController extends Controller
         $user->save();
 
         return redirect()->route('users')->with('success', 'User updated successfully');
+    }
+
+    public function addbalance(Request $request, $id)
+    {
+        $request->validate([
+            'amount' => 'required|numeric',
+        ]);
+        $user = User::findOrFail($id);
+        $user->balance += $request->amount;
+        $user->save();
+        return redirect()->route('users')->with('success', 'Balance added successfully');
+    }
+
+    public function delete($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('users')->with('success', 'User deleted successfully');
     }
 }

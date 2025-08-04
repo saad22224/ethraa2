@@ -33,6 +33,7 @@ class AuthController extends Controller
                 'user_identifier' => rand(100000, 999999),
                 'name' => $request->name,
                 'email' => $request->email,
+                'country_code' => $request->country_code,
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
             ]);
@@ -61,11 +62,15 @@ class AuthController extends Controller
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
             ])->post('https://api.verifyway.com/api/v1/', [
-                'recipient' => $request->phone,
+                'recipient' => $request->country_code . $request->phone,
                 'type' => 'otp',
                 'code' => $verificationCode,
                 'channel' => 'whatsapp',
             ]);
+
+
+
+
 
             return response()->json([
                 'message' => 'تم إرسال كود التحقق إلى  واتساب.',
@@ -100,19 +105,16 @@ class AuthController extends Controller
             $user->is_verified = true;
             $user->verification_code = null;
 
-            // ✅ إنشاء عميل في Striga
-            // داخل الفنكشن مباشرة قبل الـ request
             $secret = env('STRIGA_SECRET');
             $apiKey = env('STRIGA_API_KEY');
             $method = 'POST';
             $endpoint = '/user/create';
-
             $body = [
                 "firstName" => $user->name,
                 "lastName" => $user->name,
                 "email" => $user->email,
                 "mobile" => [
-                    "countryCode" => "",
+                    "countryCode" => $user->country_code,
                     "number" => $user->phone
                 ],
                 "address" => [
@@ -145,6 +147,7 @@ class AuthController extends Controller
             $customer_id = $response->json('userId');
 
             $user->striga_customer_id = $customer_id;
+
 
 
             $user->save();

@@ -158,17 +158,37 @@ function showAddUserModal() {
     showModal('addUserModal');
 }
 
-function showEditUserModal(userId) {
+function showEditUserModal(userId, name, email) {
+    // افتح المودال
     showModal('editUserModal');
-    // هنا يمكن تحميل بيانات المستخدم المحدد
-    console.log('تعديل المستخدم:', userId);
+
+    // عيّن البيانات داخل الحقول
+    document.querySelector('#editUserModal input[name="name"]').value = name;
+    document.querySelector('#editUserModal input[name="email"]').value = email;
+
+    // خلي الباسورد فاضي دايمًا عند التعديل
+    document.querySelector('#editUserModal input[name="password"]').value = '';
+
+    // حدّث مسار الفورم حسب ID المستخدم
+    document.querySelector('#editUserModal form').action = `/users/update/${userId}`;
 }
 
-function showAddBalanceModal(userId) {
+function showAddBalanceModal(userId, name, balance) {
     showModal('addBalanceModal');
-    // هنا يمكن تحميل بيانات المستخدم المحدد
-    console.log('إضافة رصيد للمستخدم:', userId);
+
+    // ضبط الفورم على الرابط الصحيح
+    const form = document.querySelector('#addBalanceModal form');
+    form.action = `/users/addbalance/${userId}`; // تأكد إن ده نفس المسار في web.php
+
+    // تعبئة الحقول
+    form.querySelector('input[name="amount"]').value = ''; // نبدأ المبلغ فاضي
+    form.querySelector('.user-name').value = name;
+    form.querySelector('.user-balance').value = balance;
 }
+
+
+
+
 
 function deleteUser(userId) {
     if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
