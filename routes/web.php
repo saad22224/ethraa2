@@ -34,6 +34,8 @@ Route::get('/admin/dashboard', [App\Http\Controllers\Dashboard::class, 'index'])
     ->name('admin.dashboard');
 Route::post('/admin/login', [App\Http\Controllers\AdminAuth::class, 'login'])
     ->name('admin.login');
+Route::post('/admin/logout', [App\Http\Controllers\AdminAuth::class, 'logout'])
+    ->name('admin.logout');
 
 Route::get('/users', [App\Http\Controllers\UsersController::class, 'index'])
     ->name('users');
