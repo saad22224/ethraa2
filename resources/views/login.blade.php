@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - لوحة التحكم الإدارية</title>
-    <link rel="stylesheet" href="login-style.css">
+    <link rel="stylesheet" href="{{ asset('login-style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -72,7 +72,7 @@
         </div>
     </div>
 
-    <script src="login-script.js"></script>
+    <script src="{{ asset('login-script.js') }}"></script>
 </body>
 
 </html>

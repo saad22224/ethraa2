@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('money_receipts', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('country');
+            $table->string('city');
+            $table->string('phone')->nullable();
+            $table->string('addresse');
             $table->timestamps();
         });
     }

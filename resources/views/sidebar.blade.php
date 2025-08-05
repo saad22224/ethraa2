@@ -28,8 +28,8 @@
                     <span>التحويلات</span>
                 </a>
             </li>
-            <li class="menu-item" data-page="offices">
-                <a href="#" class="menu-link">
+            <li class="" data-page="offices">
+                <a href="{{ route('offices') }}" class="menu-link">
                     <i class="fas fa-building"></i>
                     <span>مكاتب التحويل</span>
                 </a>

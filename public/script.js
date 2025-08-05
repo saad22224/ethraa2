@@ -1,19 +1,19 @@
 // بيانات المدن حسب الدولة
 const cities = {
-    egypt: ['القاهرة', 'الإسكندرية', 'الجيزة', 'أسوان', 'الأقصر'],
-    saudi: ['الرياض', 'جدة', 'الدمام', 'مكة', 'المدينة'],
-    uae: ['دبي', 'أبوظبي', 'الشارقة', 'عجمان', 'رأس الخيمة'],
-    jordan: ['عمان', 'إربد', 'الزرقاء', 'العقبة', 'السلط']
+    مصر: ['القاهرة', 'الإسكندرية', 'الجيزة', 'أسوان', 'الأقصر'],
+    السعودية: ['الرياض', 'جدة', 'الدمام', 'مكة', 'المدينة'],
+    الإمارات: ['دبي', 'أبوظبي', 'الشارقة', 'عجمان', 'رأس الخيمة'],
+    الأردن: ['عمان', 'إربد', 'الزرقاء', 'العقبة', 'السلط']
 };
 
 // التنقل بين الصفحات
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // التحقق من حالة تسجيل الدخول
     // if (localStorage.getItem('isLoggedIn') !== 'true') {
     //     window.location.href = 'login.html';
     //     return;
     // }
-    
+
     const menuItems = document.querySelectorAll('.menu-item');
     const pageContents = document.querySelectorAll('.page-content');
     const pageTitle = document.getElementById('pageTitle');
@@ -30,31 +30,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // التنقل بين الصفحات
     menuItems.forEach(item => {
-        item.addEventListener('click', function(e) {
+        item.addEventListener('click', function (e) {
             e.preventDefault();
-            
+
             const targetPage = this.getAttribute('data-page');
-            
+
             // إزالة الكلاس النشط من جميع العناصر
             menuItems.forEach(mi => mi.classList.remove('active'));
             pageContents.forEach(pc => pc.classList.remove('active'));
-            
+
             // إضافة الكلاس النشط للعنصر المحدد
             this.classList.add('active');
             document.getElementById(targetPage).classList.add('active');
-            
+
             // تحديث عنوان الصفحة
             pageTitle.textContent = pageTitles[targetPage];
         });
     });
 
     // تبديل الشريط الجانبي للهواتف
-    sidebarToggle.addEventListener('click', function() {
+    sidebarToggle.addEventListener('click', function () {
         sidebar.classList.toggle('active');
     });
 
     // إغلاق الشريط الجانبي عند النقر خارجه
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (window.innerWidth <= 1024) {
             if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
                 sidebar.classList.remove('active');
@@ -73,19 +73,19 @@ function setupSearch() {
     const officeSearch = document.getElementById('officeSearch');
 
     if (userSearch) {
-        userSearch.addEventListener('input', function() {
+        userSearch.addEventListener('input', function () {
             searchTable('usersTableBody', this.value);
         });
     }
 
     if (transferSearch) {
-        transferSearch.addEventListener('input', function() {
+        transferSearch.addEventListener('input', function () {
             searchTable('transfersTableBody', this.value);
         });
     }
 
     if (officeSearch) {
-        officeSearch.addEventListener('input', function() {
+        officeSearch.addEventListener('input', function () {
             searchCards('officesGrid', this.value);
         });
     }
@@ -97,7 +97,7 @@ function searchTable(tableBodyId, searchTerm) {
     if (!tableBody) return;
 
     const rows = tableBody.querySelectorAll('tr');
-    
+
     rows.forEach(row => {
         const text = row.textContent.toLowerCase();
         const isVisible = text.includes(searchTerm.toLowerCase());
@@ -111,7 +111,7 @@ function searchCards(gridId, searchTerm) {
     if (!grid) return;
 
     const cards = grid.querySelectorAll('.office-card');
-    
+
     cards.forEach(card => {
         const text = card.textContent.toLowerCase();
         const isVisible = text.includes(searchTerm.toLowerCase());
@@ -137,14 +137,14 @@ function closeModal(modalId) {
 }
 
 // إغلاق النافذة عند النقر على الخلفية
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     if (e.target.classList.contains('modal')) {
         closeModal(e.target.id);
     }
 });
 
 // إغلاق النافذة بمفتاح Escape
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
         const activeModal = document.querySelector('.modal.active');
         if (activeModal) {
@@ -205,12 +205,99 @@ function showAddTransferModal() {
 // وظائف المكاتب
 function showAddOfficeModal() {
     showModal('addOfficeModal');
+
+    const countrySelect = document.getElementById('countrySelect');
+    const citySelect = document.getElementById('citySelect');
+
+    // 1. فضي الدولة والمدينة
+    countrySelect.value = '';
+    updateCitiesAdd(); // لازم تتنفذ عشان المدن تفضى أو تتحدث
+
+    // 2. بعد تحديث المدن فضي المدينة
+    setTimeout(() => {
+        citySelect.value = '';
+    }, 50);
+
+    // 3. فضي باقي البيانات
+    document.querySelector('#addOfficeModal input[type="text"]').value = '';
+    document.querySelector('#addOfficeModal textarea').value = '';
+    document.querySelector('#addOfficeModal input[type="tel"]').value = '';
+
+    // 4. عدل عنوان المودال وزر الإرسال
+    document.querySelector('#addOfficeModal .modal-header h3').textContent = 'إضافة مكتب';
+    const submitBtn = document.querySelector('#addOfficeModal .modal-footer .btn-primary');
+    submitBtn.textContent = 'إضافة المكتب';
+
+    // 5. إعدادات الفورم
+    const form = document.getElementById('addofficeForm');
+    // form.action = `/offices/store`;
+    form.method = 'POST';
+
+    // 6. احذف _method لو موجود
+    const methodInput = form.querySelector('input[name="_method"]');
+    if (methodInput) {
+        methodInput.remove();
+    }
+
+    // 7. تأكد من وجود CSRF
+    if (!form.querySelector('input[name="_token"]')) {
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = '_token';
+        tokenInput.value = '{{ csrf_token() }}'; // Laravel token
+        form.appendChild(tokenInput);
+    }
 }
 
-function showEditOfficeModal(officeId) {
-    showModal('addOfficeModal');
-    // هنا يمكن تحميل بيانات المكتب المحدد للتعديل
-    console.log('تعديل المكتب:', officeId);
+
+function showEditOfficeModal(office) {
+    showModal('editOfficeModal');
+
+    const countrySelect = document.getElementById('countrySelectEdit');
+    const citySelect = document.getElementById('citySelectEdit');
+
+    // 1. ضع الدولة أولاً
+    countrySelect.value = office.country?.toLowerCase() || '';
+
+    // 2. نحدث المدن بناءً على الدولة
+    updateCitiesedit(); // لازم تفك الكومنت هنا علشان المدن تتحدث
+
+    // 3. نستخدم setTimeout علشان نستنى لما المدن تتحدث
+    setTimeout(() => {
+        citySelect.value = office.city || '';
+    }, 50);
+
+    // 4. باقي البيانات
+    document.querySelector('#editOfficeModal input[type="text"]').value = office.name || '';
+    document.querySelector('#editOfficeModal textarea').value = office.addresse || '';
+    document.querySelector('#editOfficeModal input[type="tel"]').value = office.phone || '';
+
+    document.querySelector('#editOfficeModal .modal-header h3').textContent = 'تعديل المكتب';
+    const submitBtn = document.querySelector('#editOfficeModal .modal-footer .btn-primary');
+    submitBtn.textContent = 'تحديث المكتب';
+
+    const form = document.getElementById('officeForm');
+    form.action = `/offices/update/${office.id}`;
+    form.method = 'POST';
+
+    // _method PUT
+    let methodInput = form.querySelector('input[name="_method"]');
+    if (!methodInput) {
+        methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        form.appendChild(methodInput);
+    }
+    methodInput.value = 'PUT';
+
+    // CSRF
+    if (!form.querySelector('input[name="_token"]')) {
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = '_token';
+        tokenInput.value = '{{ csrf_token() }}';
+        form.appendChild(tokenInput);
+    }
 }
 
 function deleteOffice(officeId) {
@@ -221,19 +308,44 @@ function deleteOffice(officeId) {
 }
 
 // تحديث المدن حسب الدولة المختارة
-function updateCities() {
-    const countrySelect = document.getElementById('countrySelect');
-    const citySelect = document.getElementById('citySelect');
-    
+function updateCitiesAdd() {
+    const countrySelect = document.getElementById('countrySelectAdd');
+    const citySelect = document.getElementById('citySelectAdd');
+
     if (!countrySelect || !citySelect) return;
-    
+
     const selectedCountry = countrySelect.value;
-    
+
     // مسح المدن الحالية
     citySelect.innerHTML = '<option value="">اختر المدينة</option>';
-    
+
     // إضافة المدن الجديدة
     if (selectedCountry && cities[selectedCountry]) {
+                console.log('Available Cities:', cities[selectedCountry]); // تتبع
+
+        cities[selectedCountry].forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    }
+}
+function updateCitiesedit() {
+    const countrySelect = document.getElementById('countrySelectEdit');
+    const citySelect = document.getElementById('citySelectEdit');
+
+    if (!countrySelect || !citySelect) return;
+
+    const selectedCountry = countrySelect.value;
+
+    // مسح المدن الحالية
+    citySelect.innerHTML = '<option value="">اختر المدينة</option>';
+
+    // إضافة المدن الجديدة
+    if (selectedCountry && cities[selectedCountry]) {
+                console.log('Available Cities:', cities[selectedCountry]); // تتبع
+
         cities[selectedCountry].forEach(city => {
             const option = document.createElement('option');
             option.value = city;
@@ -247,7 +359,7 @@ function updateCities() {
 function updateTime() {
     const now = new Date();
     const timeString = now.toLocaleTimeString('ar-EG');
-    
+
     // يمكن إضافة عنصر لعرض الوقت إذا لزم الأمر
     console.log('الوقت الحالي:', timeString);
 }
@@ -258,19 +370,19 @@ setInterval(updateTime, 60000);
 // معالجة إرسال النماذج (يمكن تخصيصها حسب الحاجة)
 // document.addEventListener('submit', function(e) {
 //     e.preventDefault();
-    
+
 //     const form = e.target;
 //     const formData = new FormData(form);
-    
+
 //     // هنا يمكن إرسال البيانات إلى الخادم
 //     console.log('إرسال البيانات:', Object.fromEntries(formData));
-    
+
 //     // إغلاق النافذة المنبثقة
 //     const modal = form.closest('.modal');
 //     if (modal) {
 //         closeModal(modal.id);
 //     }
-    
+
 //     // عرض رسالة نجاح
 //     showSuccessMessage('تم حفظ البيانات بنجاح');
 // });
@@ -293,9 +405,9 @@ function showSuccessMessage(message) {
         z-index: 3000;
         animation: slideInRight 0.3s ease;
     `;
-    
+
     document.body.appendChild(messageDiv);
-    
+
     // إزالة الرسالة بعد 3 ثوان
     setTimeout(() => {
         messageDiv.style.animation = 'slideOutRight 0.3s ease';
@@ -312,10 +424,10 @@ function logout() {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('adminUsername');
         localStorage.removeItem('rememberMe');
-        
+
         // عرض رسالة تسجيل الخروج
         showSuccessMessage('تم تسجيل الخروج بنجاح');
-        
+
         // الانتقال إلى صفحة تسجيل الدخول
         setTimeout(() => {
             window.location.href = 'login.html';
