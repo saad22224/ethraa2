@@ -39,4 +39,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/transfer', [TransferController::class, 'transfer']);
     Route::post('/transaction', [TransactionController::class, 'transaction']);
     Route::post('/create-card', [CardController::class, 'createCard']);
+    Route::get('/getMoneyReceipts', [TransactionController::class, 'getMoneyReceiptsByCountry']);
 });

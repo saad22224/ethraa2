@@ -3,11 +3,22 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\money_receipts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
+
+
+
+    public function getMoneyReceiptsByCountry(Request $request)
+    {
+        $country = $request->input('country');
+        $receipts = money_receipts::where('country', $country)->get();
+        return response()->json($receipts);
+    }
+
     public function transaction(Request $request)
     {
         try {

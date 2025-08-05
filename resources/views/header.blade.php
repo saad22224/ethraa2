@@ -15,10 +15,10 @@
                 </div>
                 <form action="{{ route('admin.logout') }}" method="post">
                     @csrf
-                <button type="submit" class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>تسجيل الخروج</span>
-                </button>
+                    <button type="submit" class="logout-btn" onclick="return  confirm('هل تريد تسجيل الخروج؟')">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>تسجيل الخروج</span>
+                    </button>
                 </form>
             </div>
         </header>
