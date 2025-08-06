@@ -174,7 +174,7 @@
         </div>
 
         <!-- صفحة مكاتب التحويل -->
-        <div class="page-content" id="offices">
+        {{-- <div class="page-content" id="offices">
             <div class="page-header">
                 <h2>مكاتب التحويل</h2>
                 <button class="btn btn-primary" onclick="showAddOfficeModal()">
@@ -246,7 +246,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </main>
 
     <!-- النوافذ المنبثقة -->
@@ -255,7 +255,7 @@
 
 
     <!-- نافذة إضافة تحويل -->
-    <div class="modal" id="addTransferModal">
+    {{-- <div class="modal" id="addTransferModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>إضافة تحويل جديد</h3>
@@ -298,10 +298,10 @@
                 <button class="btn btn-primary">إضافة التحويل</button>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- نافذة إضافة مكتب -->
-    <div class="modal" id="addOfficeModal">
+    {{-- <div class="modal" id="addOfficeModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>إضافة مكتب جديد</h3>
@@ -346,7 +346,7 @@
                 <button class="btn btn-primary">إضافة المكتب</button>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <script src="{{ asset('script.js') }}"></script>
 </body>

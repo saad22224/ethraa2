@@ -22,8 +22,8 @@
                     <span>المستخدمين</span>
                 </a>
             </li>
-            <li class="menu-item" data-page="transfers">
-                <a href="#" class="menu-link">
+            <li class="" data-page="transfers">
+                <a href="{{ route('transactions') }}" class="menu-link">
                     <i class="fas fa-exchange-alt"></i>
                     <span>التحويلات</span>
                 </a>

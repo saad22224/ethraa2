@@ -72,6 +72,22 @@ Route::delete('/offices/delete/{id}', [
 
 
 
+// transactions
+
+Route::get(
+    '/transactions',
+    [App\Http\Controllers\TransactionController::class, 'index']
+)->name('transactions');
+
+Route::delete(
+    '/transactions/delete/{id}',
+    [App\Http\Controllers\TransactionController::class, 'delete']
+)->name('transactions.delete');
+
+Route::put(
+    '/transactions/status/{id}',
+    [App\Http\Controllers\TransactionController::class, 'changestatus']
+)->name('transactions.status');
 
 
 
@@ -79,9 +95,10 @@ Route::delete('/offices/delete/{id}', [
 
 
 
-    // tracking
 
-    Route::get('/tracking', [App\Http\Controllers\TrackingController::class, 'index'])
-        ->name('tracking');
-    Route::post('/tracking/{mtcn}', [App\Http\Controllers\TrackingController::class, 'tracking'])
-        ->name('tracking.tracking');
+// tracking
+
+Route::get('/tracking', [App\Http\Controllers\TrackingController::class, 'index'])
+    ->name('tracking');
+Route::post('/tracking/{mtcn}', [App\Http\Controllers\TrackingController::class, 'tracking'])
+    ->name('tracking.tracking');
