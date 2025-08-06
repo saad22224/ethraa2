@@ -20,7 +20,17 @@
                 </div>
                 <p>مرحباً بك، يرجى تسجيل الدخول للمتابعة</p>
             </div>
-
+ 
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+ 
             <form class="login-form" action="{{ route('admin.login') }}" method="POST" id="loginForm">
                 @csrf
                 <div class="form-group">

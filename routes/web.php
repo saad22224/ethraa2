@@ -69,3 +69,19 @@ Route::delete('/offices/delete/{id}', [
     'delete'
 ])
     ->name('offices.delete');
+
+
+
+
+
+
+
+
+
+
+    // tracking
+
+    Route::get('/tracking', [App\Http\Controllers\TrackingController::class, 'index'])
+        ->name('tracking');
+    Route::post('/tracking/{mtcn}', [App\Http\Controllers\TrackingController::class, 'tracking'])
+        ->name('tracking.tracking');

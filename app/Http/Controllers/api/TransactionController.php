@@ -27,7 +27,7 @@ class TransactionController extends Controller
                 'addresse' => 'required',
             ]);
             $transaction_numnber = rand(100000, 999999);
-            $transaction_code = rand(10000000, 99999999);
+            $transaction_code = rand(1000000000, 9999999999);
             $user = auth()->user();
             DB::beginTransaction();
             if($user->balance < $request->amount) {

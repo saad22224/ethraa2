@@ -26,8 +26,8 @@ return new class extends Migration
             $table->string('national_id_back')->nullable();
             $table->string('verification_code')->nullable();
             $table->boolean('is_verified')->default(false);
-            $table->string('striga_customer_id')->nullable();
-            $table->string('kyc_verification_link')->nullable();
+            // $table->string('striga_customer_id')->nullable();
+            // $table->string('kyc_verification_link')->nullable();
             $table->string('type')->default('user');
 
             $table->rememberToken();

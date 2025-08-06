@@ -105,80 +105,80 @@ class AuthController extends Controller
             $user->is_verified = true;
             $user->verification_code = null;
 
-            $secret = env('STRIGA_SECRET');
-            $apiKey = env('STRIGA_API_KEY');
-            $method = 'POST';
-            $endpoint = '/user/create';
-            $body = [
-                "firstName" => $user->name,
-                "lastName" => $user->name,
-                "email" => $user->email,
-                "mobile" => [
-                    "countryCode" => $user->country_code,
-                    "number" => $user->phone
-                ],
-                "address" => [
-                    "addressLine1" => "Test Street",
-                    "city" => "Cairo",
-                    "country" => "EG",
-                    "postalCode" => "12345"
-                ]
-            ];
+            // $secret = env('STRIGA_SECRET');
+            // $apiKey = env('STRIGA_API_KEY');
+            // $method = 'POST';
+            // $endpoint = '/user/create';
+            // $body = [
+            //     "firstName" => $user->name,
+            //     "lastName" => $user->name,
+            //     "email" => $user->email,
+            //     "mobile" => [
+            //         "countryCode" => $user->country_code,
+            //         "number" => $user->phone
+            //     ],
+            //     "address" => [
+            //         "addressLine1" => "Test Street",
+            //         "city" => "Cairo",
+            //         "country" => "EG",
+            //         "postalCode" => "12345"
+            //     ]
+            // ];
 
-            $timestamp = (string) round(microtime(true) * 1000); // مللي ثانية
-            $bodyHash = md5(json_encode($body));
+            // $timestamp = (string) round(microtime(true) * 1000); // مللي ثانية
+            // $bodyHash = md5(json_encode($body));
 
-            $stringToSign = $timestamp . $method . $endpoint . $bodyHash;
-            $signature = hash_hmac('sha256', $stringToSign, $secret);
-            $authorizationHeader = 'HMAC ' . $timestamp . ':' . $signature;
+            // $stringToSign = $timestamp . $method . $endpoint . $bodyHash;
+            // $signature = hash_hmac('sha256', $stringToSign, $secret);
+            // $authorizationHeader = 'HMAC ' . $timestamp . ':' . $signature;
 
-            $response = Http::withHeaders([
-                'Authorization' => $authorizationHeader,
-                'api-key' => $apiKey,
-                'Content-Type' => 'application/json',
-            ])->post('https://www.sandbox.striga.com/api/v1' . $endpoint, $body);
+            // $response = Http::withHeaders([
+            //     'Authorization' => $authorizationHeader,
+            //     'api-key' => $apiKey,
+            //     'Content-Type' => 'application/json',
+            // ])->post('https://www.sandbox.striga.com/api/v1' . $endpoint, $body);
 
-            \Log::info("Generated timestamp: {$timestamp}");
-            \Log::info("Authorization: {$authorizationHeader}");
-            \Log::info("Response: " . $response);
-
-
-
-            $customer_id = $response->json('userId');
-
-            $user->striga_customer_id = $customer_id;
+            // \Log::info("Generated timestamp: {$timestamp}");
+            // \Log::info("Authorization: {$authorizationHeader}");
+            // \Log::info("Response: " . $response);
 
 
 
-            // ⚠️ بدء عملية KYC بعد إنشاء المستخدم
-            $kyc_endpoint = '/user/kyc/start';
-            $kyc_body = [
-                "userId" => $customer_id
-            ];
+            // $customer_id = $response->json('userId');
 
-            $kyc_timestamp = (string) round(microtime(true) * 1000);
-            $kyc_bodyHash = md5(json_encode($kyc_body));
-            $kyc_stringToSign = $kyc_timestamp . 'POST' . $kyc_endpoint . $kyc_bodyHash;
-            $kyc_signature = hash_hmac('sha256', $kyc_stringToSign, $secret);
-            $kyc_authorizationHeader = 'HMAC ' . $kyc_timestamp . ':' . $kyc_signature;
-
-            $kyc_response = Http::withHeaders([
-                'Authorization' => $kyc_authorizationHeader,
-                'api-key' => $apiKey,
-                'Content-Type' => 'application/json',
-            ])->post('https://www.sandbox.striga.com/server/api/v0' . $kyc_endpoint, $kyc_body);
-
-            \Log::info("KYC Response: " . $kyc_response->body());
-            $user->kyc_verification_link = $kyc_response->json('verificationLink');
+            // $user->striga_customer_id = $customer_id;
 
 
+
+            // // ⚠️ بدء عملية KYC بعد إنشاء المستخدم
+            // $kyc_endpoint = '/user/kyc/start';
+            // $kyc_body = [
+            //     "userId" => $customer_id
+            // ];
+
+            // $kyc_timestamp = (string) round(microtime(true) * 1000);
+            // $kyc_bodyHash = md5(json_encode($kyc_body));
+            // $kyc_stringToSign = $kyc_timestamp . 'POST' . $kyc_endpoint . $kyc_bodyHash;
+            // $kyc_signature = hash_hmac('sha256', $kyc_stringToSign, $secret);
+            // $kyc_authorizationHeader = 'HMAC ' . $kyc_timestamp . ':' . $kyc_signature;
+
+            // $kyc_response = Http::withHeaders([
+            //     'Authorization' => $kyc_authorizationHeader,
+            //     'api-key' => $apiKey,
+            //     'Content-Type' => 'application/json',
+            // ])->post('https://www.sandbox.striga.com/server/api/v0' . $kyc_endpoint, $kyc_body);
+
+            // \Log::info("KYC Response: " . $kyc_response->body());
+            // $user->kyc_verification_link = $kyc_response->json('verificationLink');
+
+
+            // $verificationLink = $user->kyc_verification_link;
             $user->save();
 
             $token = $user->createToken('auth_token')->plainTextToken;
-$verificationLink = $user->kyc_verification_link;
             return response()->json([
                 'message' => 'User verified and registered on Striga',
-                'kyc_link' => $verificationLink,
+                // 'kyc_link' => $verificationLink,
                 'token' => $token,
                 'user' => $user
             ], 201);

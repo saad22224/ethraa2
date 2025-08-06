@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('transaction_code');
             $table->string('addresse');
             $table->string('amount');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

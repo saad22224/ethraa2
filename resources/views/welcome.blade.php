@@ -37,6 +37,7 @@
                     <li><a href="#features">المزايا</a></li>
                     <li><a href="#faq">أسئلة شائعة</a></li>
                     <li><a href="#contact">تواصل معنا</a></li>
+                    <li><a href="{{ route('tracking') }}"> تعقب الحواله</a></li>
                 </ul>
 
                 <!-- Mobile Menu Button -->

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Transaction extends Model
 {
         protected $guarded = [];
-        use SoftDeletes;
+        // use SoftDeletes;
         public function user()
         {
             return $this->belongsTo(User::class);
