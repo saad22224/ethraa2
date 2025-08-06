@@ -98,14 +98,14 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe elements for animation
-const animateElements = document.querySelectorAll('.about-card, .feature-card, .faq-item');
+// const animateElements = document.querySelectorAll('.about-card, .feature-card, .faq-item');
 
-animateElements.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'all 0.6s ease';
-    observer.observe(el);
-});
+// animateElements.forEach(el => {
+//     el.style.opacity = '0';
+//     el.style.transform = 'translateY(30px)';
+//     el.style.transition = 'all 0.6s ease';
+//     observer.observe(el);
+// });
 
 // Counter Animation for Hero Stats
 const statNumbers = document.querySelectorAll('.stat-number');
