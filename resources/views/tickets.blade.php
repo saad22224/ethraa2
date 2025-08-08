@@ -25,7 +25,7 @@
         <div class="page-content" id="offices">
             <div class="page-header">
                 <h2> الشكاوي</h2>
-         
+
             </div>
 
             <div class="search-box">
@@ -53,7 +53,9 @@
                                 </i>{{ $ticket->message }}
                             </p>
                             @if ($ticket->user->phone)
-                                <p><i class="fas fa-phone"></i> {{ $ticket->user->phone }}</p>
+                                <p dir="ltr"><i
+                                        class="fas fa-phone"></i>{{ $ticket->user->country_code }}{{ $ticket->user->phone }}
+                                </p>
                             @endif
                         </div>
                         <div class="office-actions">
@@ -70,7 +72,7 @@
                         </div>
                     </div>
                 @endforeach
-              
+
             </div>
         </div>
 
@@ -103,16 +105,16 @@
         </div>
 
 
-<script>
-    function showresponsemodel(ticket) {
-        document.getElementById('responsemodel').style.display = 'block';
-        document.getElementById('responsemodel').style.textAlign = 'center';
-    }
+        <script>
+            function showresponsemodel(ticket) {
+                document.getElementById('responsemodel').style.display = 'block';
+                document.getElementById('responsemodel').style.textAlign = 'center';
+            }
 
-    function closeresponse(){
-        document.getElementById('responsemodel').style.display = 'none';
-    }
-</script>
+            function closeresponse() {
+                document.getElementById('responsemodel').style.display = 'none';
+            }
+        </script>
 
     </main>
 
