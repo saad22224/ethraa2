@@ -22,12 +22,21 @@ class AuthController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
-                'email' => 'required|email|unique:users,email',
+                'email' => 'required|email',
                 'phone' => 'required|numeric',
                 'national_id_front' => 'required|file|image',
                 'national_id_back' => 'required|file|image',
                 'password' => 'required|min:8',
             ]);
+
+            $unverifieduser = User::where('phone', $request->phone)
+            ->where('is_verified', 0)
+            ->first();
+
+
+            if ($unverifieduser) {
+                $unverifieduser->delete();
+            }
 
             $user = User::create([
                 'user_identifier' => rand(100000, 999999),
@@ -77,7 +86,7 @@ class AuthController extends Controller
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 400);
         }
     }
@@ -173,18 +182,18 @@ class AuthController extends Controller
 
 
             // $verificationLink = $user->kyc_verification_link;
+            // return response()->json([
+            //     'message' => 'User verified and registered on Striga',
+            //     // 'kyc_link' => $verificationLink,
+            //     'token' => $token,
+            //     'user' => $user
+            // ], 201);
             $user->save();
 
             $token = $user->createToken('auth_token')->plainTextToken;
-            return response()->json([
-                'message' => 'User verified and registered on Striga',
-                // 'kyc_link' => $verificationLink,
-                'token' => $token,
-                'user' => $user
-            ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'حدث خطأ داخلي',
+                'error' => 'حدث خطأ داخلي',
                 'error' => $e->getMessage(),
             ], 400);
         }
@@ -307,7 +316,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'User not authenticated',
+                'error' => 'User not authenticated',
             ], 401);
         }
         DeviceToken::updateOrCreate(
@@ -319,5 +328,27 @@ class AuthController extends Controller
             'status' => 'success',
             'message' => 'Device token saved successfully',
         ]);
+    }
+
+
+
+    public function delete(Request $request){
+        $user = $request->user();
+
+        if(!$user){
+            return response()->json([
+                'error' => 'user not found'
+            ]);
+        }
+
+
+
+
+        $user->delete();
+
+        return response()->json([
+            'message' => 'User deleted successfully'
+        ]);
+
     }
 }
