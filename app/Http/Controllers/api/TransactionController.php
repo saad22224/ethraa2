@@ -14,8 +14,15 @@ class TransactionController extends Controller
 
     public function getMoneyReceiptsByCountry(Request $request)
     {
+        $user = auth()->user();
+        if(!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
         $country = $request->input('country');
         $receipts = money_receipts::where('country', $country)->get();
+        if(!$receipts) {
+            return response()->json(['error' => 'No receipts found'], 404);
+        }
         return response()->json($receipts);
     }
 

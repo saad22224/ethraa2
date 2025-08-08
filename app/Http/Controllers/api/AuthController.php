@@ -182,15 +182,15 @@ class AuthController extends Controller
 
 
             // $verificationLink = $user->kyc_verification_link;
-
+            
+            $token = $user->createToken('auth_token')->plainTextToken;
             $user->save();
             return response()->json([
                 'message' => 'User verified and registered on Striga',
                 // 'kyc_link' => $verificationLink,
-                // 'token' => $token,
+                'token' => $token,
                 'user' => $user
             ], 201);
-            $token = $user->createToken('auth_token')->plainTextToken;
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'حدث خطأ داخلي',

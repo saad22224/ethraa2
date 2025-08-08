@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\User;
 use App\Services\TransferService;
 use Illuminate\Http\Request;
@@ -65,6 +66,18 @@ class TransferController extends Controller
                     $recipient->id,
                     "لقد تلقيت مدفوعات بقيمة {$amount} من {$sender->name}"
                 );
+
+
+                Notification::create([
+                    'user_id' => $recipient->id,
+                    'body' => "لقد تلقيت مدفوعات بقيمة {$amount} من {$sender->name}"
+
+                ]);
+                Notification::create([
+                    'user_id' => $sender->id,
+                    'body' => "لقد تم إرسال مدفوعات بقيمة {$amount} إلي {$recipient->name}"
+
+                ]);
                 Log::info('Notification sent', [
                     'to_user_id' => $recipient->id
                 ]);
