@@ -102,3 +102,15 @@ Route::get('/tracking', [App\Http\Controllers\TrackingController::class, 'index'
     ->name('tracking');
 Route::post('/tracking/{mtcn}', [App\Http\Controllers\TrackingController::class, 'tracking'])
     ->name('tracking.tracking');
+
+
+
+    // tickets
+
+    Route::get('/tickets', [App\Http\Controllers\TicketController::class, 'index'])
+        ->name('tickets');
+
+    Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'delete'])
+        ->name('tickets.delete');
+    Route::post('/tickets/response', [App\Http\Controllers\TicketController::class, 'response'])
+        ->name('tickets.response');

@@ -30,8 +30,8 @@ class AuthController extends Controller
             ]);
 
             $unverifieduser = User::where('phone', $request->phone)
-            ->where('is_verified', 0)
-            ->first();
+                ->where('is_verified', 0)
+                ->first();
 
 
             if ($unverifieduser) {
@@ -182,14 +182,14 @@ class AuthController extends Controller
 
 
             // $verificationLink = $user->kyc_verification_link;
-            // return response()->json([
-            //     'message' => 'User verified and registered on Striga',
-            //     // 'kyc_link' => $verificationLink,
-            //     'token' => $token,
-            //     'user' => $user
-            // ], 201);
-            $user->save();
 
+            $user->save();
+            return response()->json([
+                'message' => 'User verified and registered on Striga',
+                // 'kyc_link' => $verificationLink,
+                // 'token' => $token,
+                'user' => $user
+            ], 201);
             $token = $user->createToken('auth_token')->plainTextToken;
         } catch (\Exception $e) {
             return response()->json([
@@ -332,10 +332,11 @@ class AuthController extends Controller
 
 
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $user = $request->user();
 
-        if(!$user){
+        if (!$user) {
             return response()->json([
                 'error' => 'user not found'
             ]);
@@ -349,6 +350,5 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'User deleted successfully'
         ]);
-
     }
 }

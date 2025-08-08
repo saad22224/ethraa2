@@ -34,5 +34,11 @@
                     <span>مكاتب التحويل</span>
                 </a>
             </li>
+            <li class="" data-page="offices">
+                <a href="{{ route('tickets') }}" class="menu-link">
+                    <i class="fas fa-building"></i>
+                    <span>الشكاوي</span>
+                </a>
+            </li>
         </ul>
     </nav>
