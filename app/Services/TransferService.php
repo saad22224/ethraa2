@@ -29,7 +29,7 @@ class TransferService
 
         $response = Http::withToken($accessToken)
             ->post("https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send", $payload);
-
+        \Log::info('FCM Response:', ['response' => $response->json()]);
         return $response->json();
     }
 
