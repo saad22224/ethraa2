@@ -14,10 +14,149 @@
 
 
 <style>
-    html{
+    html {
         overflow-x: hidden !important;
     }
+
+    .CON {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .slider-container {
+        max-width: 800px;
+        width: 100%;
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+    }
+
+    .slider-wrapper {
+        position: relative;
+        width: 100%;
+        height: 700px;
+        overflow: hidden;
+    }
+
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateX(50px);
+    }
+
+    .slide.active {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+    }
+
+    .slide-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        padding: 60px 40px 30px;
+        color: white;
+        transform: translateY(100%);
+        transition: transform 0.8s ease;
+    }
+
+    .slide.active .slide-content {
+        transform: translateY(0);
+    }
+
+    .slide-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .slide-description {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+
+
+
+    .dots-container {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 12px;
+        z-index: 10;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .dot.active {
+        background: white;
+        transform: scale(1.3);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .dot:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+        .slider-wrapper {
+            height: 400px;
+        }
+
+        .slide-content {
+            padding: 40px 20px 20px;
+        }
+
+        .slide-title {
+            font-size: 1.5rem;
+        }
+
+        .slide-description {
+            font-size: 1rem;
+        }
+
+        .navigation {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+        }
+    }
 </style>
+
 <body>
     <!-- Header -->
     <header class="header">
@@ -237,7 +376,110 @@
             </div>
         </div>
     </section>
+    <div class="CON">
+        <div class="slider-container">
+            <div class="slider-wrapper">
+                <div class="slide active">
+                    <img src="{{ asset('assets/1.jpg') }}"
+                        alt="منظر طبيعي">
+                </div>
 
+                <div class="slide">
+                    <img src="{{ asset('assets/2.jpg') }}"
+                        alt="بحيرة">
+                </div>
+
+                <div class="slide">
+                    <img src="{{ asset('assets/3.jpg') }}"
+                        alt="غابة">
+                </div>
+
+                <div class="slide">
+                    <img src="{{ asset('assets/4.jpg') }}"
+                        alt="جبال">
+                </div>
+
+                <div class="slide">
+                    <img src="{{ asset('assets/5.jpg') }}"
+                        alt="شاطئ">
+
+                </div>
+                <div class="slide">
+                    <img src="{{ asset('assets/6.jpg') }}"
+                        alt="شاطئ">
+
+                </div>
+                <div class="slide">
+                    <img src="{{ asset('assets/7.jpg') }}"
+                        alt="شاطئ">
+
+                </div>
+                <div class="slide">
+                    <img src="{{ asset('assets/8.jpg') }}"
+                        alt="شاطئ">
+
+                </div>
+            </div>
+
+
+
+            <div class="dots-container">
+                <span class="dot active" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+                <span class="dot" onclick="currentSlide(5)"></span>
+                <span class="dot" onclick="currentSlide(6)"></span>
+                <span class="dot" onclick="currentSlide(7)"></span>
+                <span class="dot" onclick="currentSlide(8)"></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        let slideInterval;
+
+        function showSlide(n) {
+            slides[slideIndex].classList.remove('active');
+            dots[slideIndex].classList.remove('active');
+
+            slideIndex = (n + slides.length) % slides.length;
+
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+        }
+
+        function currentSlide(n) {
+            showSlide(n - 1);
+            resetInterval();
+        }
+
+        function autoSlide() {
+            slideInterval = setInterval(() => {
+                showSlide(slideIndex + 1);
+            }, 4000);
+        }
+
+        function resetInterval() {
+            clearInterval(slideInterval);
+            autoSlide();
+        }
+
+        // تشغيل السلايدر التلقائي
+        autoSlide();
+
+        // إيقاف السلايدر عند التمرير فوق الصورة
+        document.querySelector('.slider-container').addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+
+        // تشغيل السلايدر عند الخروج من الصورة
+        document.querySelector('.slider-container').addEventListener('mouseleave', () => {
+            autoSlide();
+        });
+    </script>
     <!-- FAQ Section -->
     <section id="faq" class="faq">
         <div class="container">
@@ -312,8 +554,8 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                         <img style="width: 100px; border-radius: 8px;" src="{{ asset('assets/logo-01.jpg') }}"
-                        alt="">
+                        <img style="width: 100px; border-radius: 8px;" src="{{ asset('assets/logo-01.jpg') }}"
+                            alt="">
                         {{-- <i class="fas fa-wallet"></i> --}}
                         {{-- <span>FlowPay</span> --}}
                     </div>
