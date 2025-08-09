@@ -23,13 +23,23 @@ class TransferService
                 'notification' => [
                     'body' => $body,
                 ],
-                'data' => $data,
             ]
         ];
 
+        if (!empty($data)) {
+            $stringData = [];
+            foreach ($data as $key => $value) {
+                $stringData[(string)$key] = (string)$value;
+            }
+            $payload['message']['data'] = $stringData;
+        }
+
         $response = Http::withToken($accessToken)
             ->post("https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send", $payload);
-        \Log::info('FCM Response:', ['response' => $response->json()]);
+        \Log::info('FCM Status Code: ' . $response->status());
+        \Log::info($data);
+        \Log::info('FCM Raw Body: ' . $response->body());
+        \Log::info('FCM JSON Parsed: ', $response->json() ?? []);
         return $response->json();
     }
 

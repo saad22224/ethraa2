@@ -26,19 +26,12 @@ class NotificationController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        if ($type == "transactions") {
-
-            $history = $user->transactions()->get();
-        } else if ($type == "transfers") {
-            $sent = $user->transfers()->where('sender_id', $user->id)->get();
-            $received = $user->transfers()->where('recipient_id', $user->id)->get();
-            // $history = shuffle($received , $sent);
-
-            return response()->json([
-                'sent' => $sent,
-                'received' => $received
-            ]);
+        if($type == "transactions") {
+            
+            $transactions = $user->transactions()->get();
+        }else if($type == "transfers") {
+            $transactions = $user->transfers()->get();
         }
-        return response()->json($history);
+        return response()->json($transactions);
     }
 }
