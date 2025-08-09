@@ -68,4 +68,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notification::class);
     }
+    public function transfers()
+    {
+        return Transfer::where(function ($query) {
+            $query->where('sender_id', $this->id)
+                ->orWhere('recipient_id', $this->id);
+        });
+    }
 }

@@ -9,6 +9,7 @@ use App\Services\TransferService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Models\Transfer;
 
 class TransferController extends Controller
 {
@@ -53,7 +54,11 @@ class TransferController extends Controller
             $recipient->save();
 
             DB::commit();
-
+            Transfer::create([
+                'sender_id' => $sender->id,
+                'recipient_id' => $recipient->id,
+                'amount' => $amount
+            ]);
             Log::info('Transfer successful', [
                 'from_user' => $sender->id,
                 'to_user' => $recipient->id,

@@ -42,5 +42,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/transaction', [TransactionController::class, 'transaction']);
     Route::post('/create-card', [CardController::class, 'createCard']);
     Route::get('/getMoneyReceipts', [TransactionController::class, 'getMoneyReceiptsByCountry']);
-    Route::get('/GetUserNotifications', [NotificationController::class, 'GetUserNotifications']);
+    Route::get('/GetUserNotifications', [NotificationController::class,
+     'GetUserNotifications']);
+
+
+     Route::get('/GetUserHistory', [NotificationController::class,
+     'GetUserHistory']);
 });

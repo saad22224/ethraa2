@@ -41,6 +41,8 @@ class TransactionController extends Controller
                 return response()->json(['error' => 'Insufficient balance'], 400);
             }
             $user->balance -= $request->amount + $request->amount * 0.05;
+            $user->save();
+
             $user->transactions()->create([
                 'transaction_number' => $transaction_numnber,
                 'transaction_code' => $transaction_code,
