@@ -28,7 +28,7 @@
                     </div>
                     <div class="stat-details">
                         <h3>إجمالي المستخدمين</h3>
-                        <p class="stat-number">1,254</p>
+                        <p class="stat-number">{{ $userscount }}</p>
                     </div>
                 </div>
 
@@ -38,7 +38,7 @@
                     </div>
                     <div class="stat-details">
                         <h3>إجمالي الأرصدة</h3>
-                        <p class="stat-number">$45,678</p>
+                        <p class="stat-number">{{ $totalbalances }}</p>
                     </div>
                 </div>
 
@@ -48,7 +48,7 @@
                     </div>
                     <div class="stat-details">
                         <h3>إجمالي السحوبات</h3>
-                        <p class="stat-number">$12,345</p>
+                        <p class="stat-number">{{ $totalwithdrawls }}</p>
                     </div>
                 </div>
 
@@ -58,7 +58,8 @@
                     </div>
                     <div class="stat-details">
                         <h3>التحويلات اليوم</h3>
-                        <p class="stat-number">89</p>
+                        <p class="stat-number">{{ $todaytransfers }}</p>
+                        {{-- {{ dd($todaytransfers) }} --}}
                     </div>
                 </div>
 
@@ -68,11 +69,11 @@
                     </div>
                     <div class="stat-details">
                         <h3>عدد المكاتب</h3>
-                        <p class="stat-number">156</p>
+                        <p class="stat-number">{{ $moneyreceiptscount }}</p>
                     </div>
                 </div>
 
-                <div class="stat-card">
+                {{-- <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -80,10 +81,10 @@
                         <h3>معدل النمو</h3>
                         <p class="stat-number">+15%</p>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
-            <div class="recent-activity">
+            {{-- <div class="recent-activity">
                 <h2>النشاطات الأخيرة</h2>
                 <div class="activity-list">
                     <div class="activity-item">
@@ -102,14 +103,14 @@
                         <small>منذ ساعة</small>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <!-- صفحة المستخدمين -->
-    
+
 
         <!-- صفحة التحويلات -->
-        <div class="page-content" id="transfers">
+        {{-- <div class="page-content" id="transfers">
             <div class="page-header">
                 <h2>التحويلات المصرفية</h2>
                 <button class="btn btn-primary" onclick="showAddTransferModal()">
@@ -171,7 +172,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> --}}
 
         <!-- صفحة مكاتب التحويل -->
         {{-- <div class="page-content" id="offices">

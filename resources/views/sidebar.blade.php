@@ -10,8 +10,8 @@
         </div>
         
         <ul class="sidebar-menu">
-            <li class="menu-item active" data-page="dashboard">
-                <a href="#" class="menu-link">
+            <li class=" active" data-page="dashboard">
+                <a href="{{ route('admin.dashboard') }}" class="menu-link">
                     <i class="fas fa-home"></i>
                     <span>الإحصائيات</span>
                 </a>

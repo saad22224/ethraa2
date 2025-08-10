@@ -32,10 +32,17 @@ class AuthController extends Controller
             $unverifieduser = User::where('phone', $request->phone)
                 ->where('is_verified', 0)
                 ->first();
+            $verifieduser = User::where('phone', $request->phone)
+                ->where('is_verified', 1)
+                ->first();
 
 
             if ($unverifieduser) {
                 $unverifieduser->delete();
+            }else if($verifieduser){
+                return response()->json([
+                    'error' => 'المستخدم موجود بالفعل',
+                ]);
             }
 
             $user = User::create([
@@ -182,9 +189,11 @@ class AuthController extends Controller
 
 
             // $verificationLink = $user->kyc_verification_link;
-            
+
             $token = $user->createToken('auth_token')->plainTextToken;
             $user->save();
+            Mail::to($request->email)->send(new UserLogin($user->name));
+
             return response()->json([
                 'message' => 'User verified and registered on Striga',
                 // 'kyc_link' => $verificationLink,
@@ -220,7 +229,6 @@ class AuthController extends Controller
         $user->verification_code = $verificationCode;
         $user->save();
 
-        // Mail::to($request->email)->send(new VerificationCodeMail($verificationCode));
         $response = Http::withHeaders([
             'Authorization' => 'Bearer 121$EbuaGQzqXMqhseLLruhtGeRDtPFmiEQHIWdl',
             'Content-Type' => 'application/json',
