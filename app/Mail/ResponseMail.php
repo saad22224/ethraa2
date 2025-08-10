@@ -30,7 +30,7 @@ class ResponseMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Response Mail',
+        subject: 'تم الرد على مشكلتك',
         );
     }
 

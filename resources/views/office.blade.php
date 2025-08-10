@@ -149,7 +149,7 @@
                             <input name="phone" type="tel" class="form-control" required>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" onclick="closeModal('addOfficeModal')">إلغاء</button>
+                            <button class="btn btn-secondary" onclick="closeModal('editOfficeModal')">إلغاء</button>
                             <button type="submit" class="btn btn-primary">إضافة المكتب</button>
                         </div>
                     </form>

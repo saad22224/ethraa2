@@ -28,9 +28,10 @@ class UserLogin extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'User Login',
+            subject: 'مرحبًا بك في موقعنا',
         );
     }
+
 
     /**
      * Get the message content definition.
