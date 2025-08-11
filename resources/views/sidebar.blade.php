@@ -4,9 +4,9 @@
                 <i class="fas fa-tachometer-alt"></i>
                 <span>لوحة التحكم</span>
             </div>
-            <button class="sidebar-toggle" id="sidebarToggle">
+            {{-- <button class="sidebar-toggle" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
-            </button>
+            </button> --}}
         </div>
         
         <ul class="sidebar-menu">
@@ -38,6 +38,12 @@
                 <a href="{{ route('tickets') }}" class="menu-link">
                     <i class="fas fa-building"></i>
                     <span>الشكاوي</span>
+                </a>
+            </li>
+            <li class="" data-page="offices">
+                <a href="{{ route('tickets') }}" class="menu-link">
+                    <i class="fas fa-building"></i>
+                    <span>البانرات الإعلانية</span>
                 </a>
             </li>
         </ul>

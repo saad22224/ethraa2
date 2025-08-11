@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
@@ -114,3 +115,17 @@ Route::post('/tracking/{mtcn}', [App\Http\Controllers\TrackingController::class,
         ->name('tickets.delete');
     Route::post('/tickets/response', [App\Http\Controllers\TicketController::class, 'response'])
         ->name('tickets.response');
+
+
+
+
+
+
+
+
+
+
+
+        // user status
+        Route::post('/userstatus/{id}', [UsersController::class, 'changestatus'])
+            ->name('userstatus.update');

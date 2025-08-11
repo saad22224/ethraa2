@@ -70,4 +70,18 @@ class UsersController extends Controller
         $user->delete();
         return redirect()->route('users')->with('success', 'User deleted successfully');
     }
+
+
+    public function changestatus(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = $request->status; // 0 أو 1
+        $user->save();
+
+        return response()->json([
+            'message' => $user->status
+                ? 'تم ترقية المستخدم بنجاح'
+                : 'تم إلغاء ترقية المستخدم'
+        ]);
+    }
 }

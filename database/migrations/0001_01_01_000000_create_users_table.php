@@ -29,7 +29,7 @@ return new class extends Migration
             // $table->string('striga_customer_id')->nullable();
             // $table->string('kyc_verification_link')->nullable();
             $table->string('type')->default('user');
-
+            $table->boolean('status')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
