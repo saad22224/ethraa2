@@ -157,6 +157,9 @@ document.addEventListener('keydown', function (e) {
 function showAddUserModal() {
     showModal('addUserModal');
 }
+function showAddbannerModal() {
+    showModal('AddbannerModal');
+}
 
 function showEditUserModal(userId, name, email) {
     // افتح المودال

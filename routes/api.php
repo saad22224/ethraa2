@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\BannerController;
 use App\Http\Controllers\api\CardController;
 use App\Http\Controllers\api\NotificationController;
 use App\Http\Controllers\api\TicketController;
@@ -48,4 +49,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
      Route::get('/GetUserHistory', [NotificationController::class,
      'GetUserHistory']);
+     Route::get('/Getbanners', [BannerController::class,
+     'Getbanners']);
 });

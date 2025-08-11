@@ -129,3 +129,21 @@ Route::post('/tracking/{mtcn}', [App\Http\Controllers\TrackingController::class,
         // user status
         Route::post('/userstatus/{id}', [UsersController::class, 'changestatus'])
             ->name('userstatus.update');
+
+
+
+
+
+
+
+
+
+
+            // banners 
+
+            Route::get('/mediabanners', [App\Http\Controllers\BannerController::class, 'index'])
+                ->name('banners');
+            Route::post('/mediabanners', [App\Http\Controllers\BannerController::class, 'store'])
+                ->name('banners.store');
+            Route::delete('/mediabanners/{id}', [App\Http\Controllers\BannerController::class, 'delete'])
+                ->name('banners.delete');

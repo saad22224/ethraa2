@@ -69,83 +69,78 @@
 
         <div class="page-content" id="users">
             <div class="page-header">
-                <h2>إدارة المستخدمين</h2>
-                <button class="btn btn-primary" onclick="showAddUserModal()">
+                <h2>إدارة البانرات</h2>
+                <button class="btn btn-primary" onclick="showAddbannerModal()">
                     <i class="fas fa-plus"></i>
-                    إضافة مستخدم
+                    إضافة بانر
                 </button>
             </div>
 
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="البحث في المستخدمين..." id="userSearch">
+                <input type="text" placeholder="البحث في بانرات..." id="userSearch">
             </div>
 
             <div class="table-container">
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>صورة الهوية الامامية</th>
-                            <th>صورة الهوية الخلفية</th>
-                            <th>الاسم</th>
-                            <th>البريد الإلكتروني</th>
-                            <th>الرصيد</th>
-                            <th>تاريخ التسجيل</th>
+                            <th>صورة البانر</th>
+                            {{-- <th>صورة الهوية الخلفية</th> --}}
+                            <th>العنوان </th>
+                            {{-- <th>البريد الإلكتروني</th> --}}
+                            <th>اللينك</th>
+                            <th>تاريخ الإنشاء</th>
                             {{-- <th>الحالة</th> --}}
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
                     <tbody id="usersTableBody">
-                        @foreach ($users as $user)
+                        @foreach ($banners as $banner)
                             <tr>
                                 <td>
-                                    <img src="{{ asset($user->national_id_front) }}" alt="صورة الهوية الأمامية"
+                                    <img src="{{ asset($banner->image) }}" alt="صورة الهوية الأمامية"
                                         style="width: 120px; height: auto; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);">
                                 </td>
-                                <td>
+                                {{-- <td>
                                     <img src="{{ asset($user->national_id_back) }}" alt="صورة الهوية الخلفية"
                                         style="width: 120px; height: auto; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);">
-                                </td>
+                                </td> --}}
 
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->balance }}</td>
-                                <td>{{ $user->created_at }}</td>
+                                <td>{{ $banner->title }}</td>
+                                <td>{{ $banner->link }}</td>
+                                {{-- <td>{{ $user->balance }}</td> --}}
+                                <td>{{ $banner->created_at }}</td>
 
                                 <td>
                                     <!-- زر تعديل -->
-                                    <button class="btn-action edit"
+                                    {{-- <button class="btn-action edit"
                                         onclick="showEditUserModal(
-                {{ $user->id }}, 
-                '{{ addslashes($user->name) }}', 
-                '{{ addslashes($user->email) }}'
+                {{ $banner->id }}, 
+                '{{ addslashes($banner->title) }}', 
+                '{{ addslashes($banner->link) }}'
             )">
                                         <i class="fas fa-edit"></i>
-                                    </button>
+                                    </button> --}}
 
                                     <!-- زر إضافة رصيد -->
-                                    <button class="btn-action balance"
+                                    {{-- <button class="btn-action balance"
                                         onclick="showAddBalanceModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ $user->balance }}')">
                                         <i class="fas fa-plus"></i>
-                                    </button>
+                                    </button> --}}
 
                                     <!-- زر حذف -->
-                                    <form action="{{ route('users.delete', $user->id) }}" method="post"
-                                        style="display:inline;">
+                                    <form action="{{ route('banners.delete', $banner->id) }}" method="post"
+                                        style="display:inline;"  >
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn-action delete" onclick="deleteUser(1)">
+                                        <button class="btn-action delete" onclick="return  confirm('هل تريد  حذف هذا البانر')">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
 
                                     <!-- سويتش الحظر -->
-                                    <label class="switch">
-                                        <input type="checkbox"
-                                            onchange="toggleBlockUser({{ $user->id }}, this.checked)"
-                                            {{ $user->status ? 'checked' : '' }}>
-                                        <span class="slider round"></span>
-                                    </label>
+                                   
                                 </td>
                             </tr>
                         @endforeach
@@ -171,115 +166,70 @@
 
 
 
-        <div class="modal" id="addUserModal">
+        <div class="modal" id="AddbannerModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>إضافة مستخدم جديد</h3>
-                    <button class="modal-close" onclick="closeModal('addUserModal')">
+                    <h3>إضافة بانر جديد</h3>
+                    <button class="modal-close" onclick="closeModal('AddbannerModal')">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('users.store') }}" method="POST">
+                    <form action="{{ route('banners.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
-                            <label>الاسم الكامل</label>
-                            <input name="name" type="text" class="form-control" required>
+                            <label>عنوان البانر</label>
+                            <input name="title" type="text" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label>البريد الإلكتروني</label>
-                            <input name="email" type="email" class="form-control" required>
+                            <label>رابط البانر</label>
+                            <input name="link" type="url" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label>كلمة المرور</label>
-                            <input name="password" type="password" class="form-control" required>
+                            <label>صورة البانر</label>
+                            <input name="image" type="file" class="form-control" accept="image/*" required
+                                onchange="previewBannerImage(event)">
                         </div>
-                        <div class="form-group">
-                            <label> رقم الهاتف</label>
-                            <input name="phone" type="number" class="form-control" value="0">
+
+                        <!-- عرض الصورة -->
+                        <div class="form-group" style="margin-top:10px;">
+                            <img id="bannerPreview" src="" alt="معاينة البانر"
+                                style="max-width: 100%; display: none; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
                         </div>
-                        <div class="form-group">
-                            <label>الرصيد الأولي</label>
-                            <input name="balance" type="number" class="form-control" value="0">
-                        </div>
+
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-secondary"
-                                onclick="closeModal('addUserModal')">إلغاء</button>
-                            <button class="btn btn-primary">إضافة</button>
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closeModal('AddbannerModal')">إلغاء</button>
+                            <button type="submit" class="btn btn-primary">إضافة</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- نافذة تعديل مستخدم -->
-        <div class="modal" id="editUserModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>تعديل المستخدم</h3>
-                    <button class="modal-close" onclick="closeModal('editUserModal')">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-group">
-                            <label>الاسم الكامل</label>
-                            <input name="name" type="text" class="form-control" value="أحمد محمد">
-                        </div>
-                        <div class="form-group">
-                            <label>البريد الإلكتروني</label>
-                            <input name="email" readonly type="email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label> كلمة السر</label>
-                            <input name="password" type="password" class="form-control">
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="closeModal('editUserModal')">إلغاء</button>
-                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <script>
+            function previewBannerImage(event) {
+                const input = event.target;
+                const preview = document.getElementById('bannerPreview');
 
-        <!-- نافذة إضافة رصيد -->
-        <div class="modal" id="addBalanceModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>إضافة رصيد</h3>
-                    <button class="modal-close" onclick="closeModal('addBalanceModal')">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-group">
-                            <label>المستخدم</label>
-                            <input type="text" class="form-control user-name" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>الرصيد الحالي</label>
-                            <input type="text" class="form-control user-balance" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>المبلغ المضاف</label>
-                            <input name="amount" type="number" class="form-control" placeholder="أدخل المبلغ"
-                                required>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" onclick="closeModal('addBalanceModal')">إلغاء</button>
-                            <button type="submit" class="btn btn-primary">إضافة الرصيد</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
+
+
+
+
+
+
 
 
     </main>
@@ -289,7 +239,7 @@
 
     <script>
         function toggleBlockUser(userId, isBlocked) {
-               const status = isBlocked ? 1 : 0;
+            const status = isBlocked ? 1 : 0;
 
 
             fetch(`/userstatus/${userId}`, {

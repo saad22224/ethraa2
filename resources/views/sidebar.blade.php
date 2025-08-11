@@ -41,7 +41,7 @@
                 </a>
             </li>
             <li class="" data-page="offices">
-                <a href="{{ route('tickets') }}" class="menu-link">
+                <a href="{{ route('banners') }}" class="menu-link">
                     <i class="fas fa-building"></i>
                     <span>البانرات الإعلانية</span>
                 </a>
