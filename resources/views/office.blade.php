@@ -178,6 +178,22 @@
                                 <option value="السعودية">السعودية</option>
                                 <option value="الإمارات">الإمارات</option>
                                 <option value="الأردن">الأردن</option>
+                                <option value="البحرين">البحرين</option>
+                                <option value="الجزائر">الجزائر</option>
+                                <option value="العراق">العراق</option>
+                                <option value="الكويت">الكويت</option>
+                                <option value="المغرب">المغرب</option>
+                                <option value="اليمن">اليمن</option>
+                                <option value="تونس">تونس</option>
+                                <option value="سوريا">سوريا</option>
+                                <option value="لبنان">لبنان</option>
+                                <option value="ليبيا">ليبيا</option>
+                                <option value="موريتانيا">موريتانيا</option>
+                                <option value="فلسطين">فلسطين</option>
+                                <option value="الصومال">الصومال</option>
+                                <option value="جزر القمر">جزر القمر</option>
+                                <option value="تركيا">تركيا</option>
+
                             </select>
                         </div>
                         <div class="form-group">

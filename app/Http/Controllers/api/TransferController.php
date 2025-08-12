@@ -25,7 +25,9 @@ class TransferController extends Controller
             $user_identifier = $request->user_identifier;
             $amount = $request->amount;
             $sender = auth()->user();
-
+            if ($sender->user_identifier == $user_identifier) {
+                return response()->json(['error' => 'You cannot transfer to yourself'], 400);
+            }
             Log::info('Transfer initiated', [
                 'from_user_id' => $sender->id,
                 'to_user_identifier' => $user_identifier,

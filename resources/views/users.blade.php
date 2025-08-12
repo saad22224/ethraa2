@@ -81,7 +81,7 @@
                 <input type="text" placeholder="البحث في المستخدمين..." id="userSearch">
             </div>
 
-            <div class="table-container">
+            <div class="table-container" style="overflow-x: auto">
                 <table class="data-table">
                     <thead>
                         <tr>

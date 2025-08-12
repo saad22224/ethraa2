@@ -35,7 +35,7 @@
                 <input type="text" placeholder="البحث في التحويلات..." id="transferSearch">
             </div>
 
-            <div class="table-container">
+            <div class="table-container" style="overflow-x: auto">
                 <table class="data-table">
                     <thead>
                         <tr>
