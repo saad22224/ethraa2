@@ -403,6 +403,10 @@
         border: none;
         outline: none;
     }
+
+    .fa-search{
+        color: #FFD700;
+    }
 </style>
 
 <body>
@@ -874,10 +878,10 @@
                     </div>
                     <p>التطبيق الأول للتحويلات المالية السريعة والآمنة في المنطقة العربية</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a  style="text-decoration: none"  target="_blank"  href="https://www.facebook.com/SADADUNION?mibextid=ZbWKwL"><i class="fab fa-facebook"></i></a>
+                        <a  style="text-decoration: none" target="_blank" href="https://x.com/SADAD_UNION?t=9yC60Ib7RMVBv4r5wIS9CQ&s=09"><i class="fab fa-twitter"></i></a>
+                        <a  style="text-decoration: none" target="_blank" href="https://t.me/SADADUNION"><i class="fab fa-telegram"></i></a>
+                        {{-- <a href="#"><i class="fab fa-linkedin"></i></a> --}}
                     </div>
                 </div>
                 <div class="footer-section">
@@ -901,9 +905,9 @@
                 <div class="footer-section">
                     <h3>تواصل معنا</h3>
                     <div class="contact-info">
-                        <p><i class="fas fa-envelope"></i> info@flowpay.com</p>
-                        <p><i class="fas fa-phone"></i> +966 50 123 4567</p>
-                        <p><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</p>
+                        <p><i class="fas fa-envelope"></i> saddadunion@gmail.com</p>
+                        {{-- <p><i class="fas fa-phone"></i> +966 50 123 4567</p> --}}
+                        {{-- <p><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</p> --}}
                     </div>
                 </div>
             </div>
