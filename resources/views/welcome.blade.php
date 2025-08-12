@@ -7,7 +7,9 @@
     <title>Sadad Union - تطبيق التحويلات المالية</title>
     <link rel="stylesheet" href="{{ asset('styles.css') }}">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<link rel="shortcut icon" href="{{ asset('assets/logo-01.jpg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/logo-01.jpg') }}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -154,13 +156,279 @@
             height: 50px;
             font-size: 20px;
         }
+        .search-trigger{
+            transform: translateX(-150%);
+        }
+    }
+
+    .search-trigger {
+        background: none;
+        border: none;
+        color: #666;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search-trigger:hover {
+        background: #f0f0f0;
+        color: #333;
+    }
+
+    /* Search Bar Container */
+    .search-bar-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 2000;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .search-bar-container.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .search-bar-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .search-logo {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        white-space: nowrap;
+    }
+
+    /* MTCN Search Input */
+    .mtcn-search-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        background: #f8f9fa;
+        border: 2px solid #e4e6ea;
+        border-radius: 24px;
+        padding: 8px 20px;
+        transition: all 0.3s ease;
+        max-width: 600px;
+    }
+
+    .mtcn-search-container:focus-within {
+        background: white;
+        border-color: #1a73e8;
+        box-shadow: 0 2px 8px rgba(26, 115, 232, 0.15);
+    }
+
+    .mtcn-inputs-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+    }
+
+    .digit-input {
+        width: 35px;
+        height: 35px;
+        border: 1px solid #dadce0;
+        border-radius: 6px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+        background: white;
+        transition: all 0.2s ease;
+    }
+
+    .digit-input:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+    }
+
+    .separator {
+        color: #dadce0;
+        font-weight: 500;
+        margin: 0 4px;
+    }
+
+    .search-icon {
+        color: #9aa0a6;
+        font-size: 18px;
+        margin-left: 12px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .search-icon:hover {
+        color: #1a73e8;
+    }
+
+    .close-search {
+        background: none;
+        border: none;
+        color: #5f6368;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        transition: all 0.2s;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .close-search:hover {
+        background: #f8f9fa;
+        color: #333;
+    }
+
+    /* Search Suggestions/Status */
+    .search-status {
+        position: absolute;
+        top: 100%;
+        left: 20px;
+        right: 20px;
+        background: white;
+        border: 1px solid #e4e6ea;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        padding: 15px 20px;
+        font-size: 14px;
+        color: #5f6368;
+        display: none;
+    }
+
+    .search-status.show {
+        display: block;
+    }
+
+    .search-status.error {
+        color: #ea4335;
+        border-left: 3px solid #ea4335;
+        background: #fef7f7;
+    }
+
+    /* Backdrop */
+    .search-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.1);
+        z-index: 1999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .search-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .search-bar-content {
+            padding: 15px;
+            gap: 15px;
+        }
+
+        .search-logo {
+            font-size: 16px;
+            min-width: auto;
+        }
+
+        .digit-input {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+        }
+
+        .mtcn-search-container {
+            padding: 6px 15px;
+        }
+
+        .separator {
+            margin: 0 2px;
+            font-size: 12px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .search-bar-content {
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .search-logo {
+            width: 100%;
+            text-align: center;
+            order: 1;
+        }
+
+        .mtcn-search-container {
+            order: 2;
+            width: 100%;
+        }
+
+        .close-search {
+            order: 3;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+    }
+
+    #mtcnHidden:focus{
+        border: none;
+        outline: none;
     }
 </style>
 
 <body>
+    @if (session('error'))
+        <script>
+            Toastify({
+                text: "{{ session('error') }}",
+                duration: 3000,
+                destination: "{{ url('/') }}",
+                newWindow: true,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "left", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "red",
+                },
+                onClick: function() {} // Callback after click
+            }).showToast();
+        </script>
+    @endif
     <!-- Header -->
+
     <header class="header">
         <nav class="navbar">
+
             <div class="nav-container">
                 <div class="nav-logo">
                     <img style="width: 100px; border-radius: 8px;" src="{{ asset('assets/logo-01.jpg') }}"
@@ -176,8 +444,61 @@
                     <li><a href="#features">المزايا</a></li>
                     <li><a href="#faq">أسئلة شائعة</a></li>
                     <li><a href="#contact">تواصل معنا</a></li>
-                    <li><a href="{{ route('tracking') }}"> تعقب الحواله</a></li>
+                    {{-- <li><a href="{{ route('tracking') }}"> تعقب الحواله</a></li> --}}
                 </ul>
+                <button class="search-trigger" onclick="openSearch()">
+                    <i class="fas fa-search"></i>
+                </button>
+                {{-- <button onclick="Toastify({text: 'رسالة اختبار', duration: 3000}).showToast();">جرب توست</button> --}}
+
+                <div class="search-backdrop" id="searchBackdrop"></div>
+                <div class="search-bar-container" id="searchBar">
+                    <div class="search-bar-content">
+                        <div class="search-logo">تتبع الحوالة</div>
+
+                        <form id="mtcnForm" class="mtcn-search-container" method="POST"
+                            action="{{ route('tracking.tracking') }}">
+                            @csrf
+
+                            <div class="mtcn-inputs-wrapper">
+                                <input type="text" name="mtcn" id="mtcnHidden" value=""
+                                    style="
+    padding: 10px 24px;
+    background: white;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 24px;
+    cursor: text;
+    box-shadow: 0 3px 6px white;
+    transition: background 0.3s ease;
+    width: 100%;
+    text-align: center;
+  "
+                                    placeholder="أدخل رقم MTCN" />
+
+
+
+
+                            </div>
+                            <button style="border: none; background: none;" type="submit" class="search-btn">
+                                <i class="fas fa-search search-icon">
+
+                                </i>
+                                {{-- test --}}
+                            </button>
+                        </form>
+
+                        <button class="close-search" onclick="closeSearch()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="search-status" id="searchStatus">
+                        أدخل رقم MTCN المكون من 10 أرقام
+                    </div>
+                </div>
 
                 <!-- Mobile Menu Button -->
                 <div class="hamburger" id="hamburger">
@@ -380,43 +701,35 @@
         <div class="slider-container">
             <div class="slider-wrapper">
                 <div class="slide active">
-                    <img src="{{ asset('assets/1.jpg') }}"
-                        alt="منظر طبيعي">
+                    <img src="{{ asset('assets/1.jpg') }}" alt="منظر طبيعي">
                 </div>
 
                 <div class="slide">
-                    <img src="{{ asset('assets/2.jpg') }}"
-                        alt="بحيرة">
+                    <img src="{{ asset('assets/2.jpg') }}" alt="بحيرة">
                 </div>
 
                 <div class="slide">
-                    <img src="{{ asset('assets/3.jpg') }}"
-                        alt="غابة">
+                    <img src="{{ asset('assets/3.jpg') }}" alt="غابة">
                 </div>
 
                 <div class="slide">
-                    <img src="{{ asset('assets/4.jpg') }}"
-                        alt="جبال">
+                    <img src="{{ asset('assets/4.jpg') }}" alt="جبال">
                 </div>
 
                 <div class="slide">
-                    <img src="{{ asset('assets/5.jpg') }}"
-                        alt="شاطئ">
+                    <img src="{{ asset('assets/5.jpg') }}" alt="شاطئ">
 
                 </div>
                 <div class="slide">
-                    <img src="{{ asset('assets/6.jpg') }}"
-                        alt="شاطئ">
+                    <img src="{{ asset('assets/6.jpg') }}" alt="شاطئ">
 
                 </div>
                 <div class="slide">
-                    <img src="{{ asset('assets/7.jpg') }}"
-                        alt="شاطئ">
+                    <img src="{{ asset('assets/7.jpg') }}" alt="شاطئ">
 
                 </div>
                 <div class="slide">
-                    <img src="{{ asset('assets/8.jpg') }}"
-                        alt="شاطئ">
+                    <img src="{{ asset('assets/8.jpg') }}" alt="شاطئ">
 
                 </div>
             </div>
@@ -599,12 +912,146 @@
             </div>
         </div>
     </footer>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script src="{{ asset('land.js') }}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init();
+        let searchOpen = false;
+
+        // Show/Hide Status
+        function showStatus(message, type = '') {
+            const status = document.getElementById('searchStatus');
+            if (!status) return;
+            status.textContent = message;
+            status.className = `search-status show ${type}`;
+        }
+
+        function hideStatus() {
+            const status = document.getElementById('searchStatus');
+            if (!status) return;
+            status.classList.remove('show');
+        }
+
+        // Open Search Bar
+        function openSearch() {
+            const searchBar = document.getElementById('searchBar');
+            const backdrop = document.getElementById('searchBackdrop');
+
+            searchBar.classList.add('active');
+            backdrop.classList.add('active');
+            searchOpen = true;
+
+            // Focus first input after animation delay
+            setTimeout(() => {
+                const firstInput = document.querySelector('.digit-input');
+                if (firstInput) firstInput.focus();
+                showStatus('أدخل رقم MTCN المكون من 10 أرقام');
+            }, 300);
+        }
+
+        // Close Search Bar
+        function closeSearch() {
+            const searchBar = document.getElementById('searchBar');
+            const backdrop = document.getElementById('searchBackdrop');
+
+            searchBar.classList.remove('active');
+            backdrop.classList.remove('active');
+            searchOpen = false;
+
+            // Reset form and hide status
+            const form = document.getElementById('mtcnForm');
+            if (form) form.reset();
+            hideStatus();
+        }
+
+        document.getElementById('searchBackdrop').addEventListener('click', closeSearch);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && searchOpen) {
+                closeSearch();
+            }
+        });
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const inputs = document.querySelectorAll('.digit-input');
+        //     const form = document.getElementById('mtcnForm');
+
+        //     // Input event handling
+        //     inputs.forEach((input, index) => {
+        //         input.addEventListener('input', function(e) {
+        //             this.value = this.value.replace(/[^0-9]/g, '');
+
+        //             const currentLength = Array.from(inputs).map(i => i.value).join('').length;
+        //             if (currentLength === 0) {
+        //                 showStatus('أدخل رقم MTCN المكون من 10 أرقام');
+        //             } else if (currentLength === 10) {
+        //                 showStatus('اضغط Enter للبحث أو أيقونة البحث');
+        //             } else {
+        //                 showStatus(`${currentLength}/10 أرقام`);
+        //             }
+
+        //             if (this.value.length === 1 && index < inputs.length - 1) {
+        //                 inputs[index + 1].focus();
+        //             }
+        //         });
+
+        //         input.addEventListener('keydown', function(e) {
+        //             if (e.key === 'Backspace' && this.value === '' && index > 0) {
+        //                 inputs[index - 1].focus();
+        //             }
+        //             if (e.key === 'Enter') {
+        //                 e.preventDefault();
+        //                 form.dispatchEvent(new Event('submit'));
+        //             }
+        //         });
+
+        //         input.addEventListener('paste', function(e) {
+        //             e.preventDefault();
+        //             const pastedData = (e.clipboardData || window.clipboardData).getData('text');
+        //             const numbers = pastedData.replace(/[^0-9]/g, '');
+
+        //             for (let i = 0; i < numbers.length && (index + i) < inputs.length; i++) {
+        //                 inputs[index + i].value = numbers[i];
+        //             }
+
+        //             const totalLength = Array.from(inputs).map(i => i.value).join('').length;
+        //             if (totalLength === 10) {
+        //                 showStatus('اضغط Enter للبحث أو أيقونة البحث');
+        //             } else {
+        //                 showStatus(`${totalLength}/10 أرقام`);
+        //             }
+
+        //             const nextEmptyIndex = Math.min(index + numbers.length, inputs.length - 1);
+        //             inputs[nextEmptyIndex].focus();
+        //         });
+        //     });
+
+        //     document.addEventListener('DOMContentLoaded', function() {
+        //         const inputs = document.querySelectorAll('.digit-input');
+        //         const form = document.getElementById('mtcnForm');
+        //         const hiddenInput = document.getElementById('mtcnHidden');
+
+        //         // ... (باقي كود التعامل مع inputs مثل ما عندك)
+
+        //         form.addEventListener('submit', function(e) {
+        //             const mtcnValue = Array.from(inputs).map(input => input.value).join('');
+
+        //             if (mtcnValue.length !== 10) {
+        //                 e.preventDefault(); // يمنع الإرسال لو الرقم غير كامل
+        //                 alert('يرجى إدخال رقم MTCN كاملاً (10 أرقام)');
+        //                 return;
+        //             }
+
+        //             // عبي الـ input المخفي بالقيمة المجمعة قبل الإرسال
+        //             hiddenInput.value = mtcnValue;
+        //         });
+        //     });
+
+        // });
     </script>
+    {{-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script> --}}
 </body>
 
 </html>
