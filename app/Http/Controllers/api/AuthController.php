@@ -35,6 +35,7 @@ class AuthController extends Controller
             $verifieduser = User::where('phone', $request->phone)
                 ->where('is_verified', 1)
                 ->first();
+                $validatedemail = User::where('email', $request->email)->first();
 
 
             if ($unverifieduser) {
@@ -42,6 +43,12 @@ class AuthController extends Controller
             }else if($verifieduser){
                 return response()->json([
                     'error' => 'المستخدم موجود بالفعل',
+                ]);
+            }
+
+            if($validatedemail){
+                return response()->json([
+                    'error' => 'البريد الالكتروني موجود بالفعل',
                 ]);
             }
 
