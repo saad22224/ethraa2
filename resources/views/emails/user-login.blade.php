@@ -86,7 +86,7 @@
     <div class="email-container">
         <!-- Header -->
         <div class="header">
-            <h1>مرحباً بك في موقعنا</h1>
+            <h1>مرحباً بك في sadadunion</h1>
         </div>
 
         <!-- Content -->
@@ -104,9 +104,9 @@
             <p>للحصول على المساعدة، يمكنك التواصل معنا:</p>
 
             <div class="highlight">
-                البريد الإلكتروني: support@example.com
+                البريد الإلكتروني: saddadunion@gmail.com
                 <br>
-                الهاتف: +20-123-456-789
+                تليجرام: https://t.me/SADADUNION
             </div>
 
             <p>شكراً لثقتك بنا، ونتمنى لك تجربة رائعة.</p>

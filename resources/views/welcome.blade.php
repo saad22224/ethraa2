@@ -156,7 +156,8 @@
             height: 50px;
             font-size: 20px;
         }
-        .search-trigger{
+
+        .search-trigger {
             transform: translateX(-150%);
         }
     }
@@ -399,12 +400,12 @@
         }
     }
 
-    #mtcnHidden:focus{
+    #mtcnHidden:focus {
         border: none;
         outline: none;
     }
 
-    .fa-search{
+    .fa-search {
         color: #FFD700;
     }
 </style>
@@ -878,9 +879,14 @@
                     </div>
                     <p>التطبيق الأول للتحويلات المالية السريعة والآمنة في المنطقة العربية</p>
                     <div class="social-links">
-                        <a  style="text-decoration: none"  target="_blank"  href="https://www.facebook.com/SADADUNION?mibextid=ZbWKwL"><i class="fab fa-facebook"></i></a>
-                        <a  style="text-decoration: none" target="_blank" href="https://x.com/SADAD_UNION?t=9yC60Ib7RMVBv4r5wIS9CQ&s=09"><i class="fab fa-twitter"></i></a>
-                        <a  style="text-decoration: none" target="_blank" href="https://t.me/SADADUNION"><i class="fab fa-telegram"></i></a>
+                        <a style="text-decoration: none" target="_blank"
+                            href="https://www.facebook.com/SADADUNION?mibextid=ZbWKwL"><i
+                                class="fab fa-facebook"></i></a>
+                        <a style="text-decoration: none" target="_blank"
+                            href="https://x.com/SADAD_UNION?t=9yC60Ib7RMVBv4r5wIS9CQ&s=09"><i
+                                class="fab fa-twitter"></i></a>
+                        <a style="text-decoration: none" target="_blank" href="https://t.me/SADADUNION"><i
+                                class="fab fa-telegram"></i></a>
                         {{-- <a href="#"><i class="fab fa-linkedin"></i></a> --}}
                     </div>
                 </div>

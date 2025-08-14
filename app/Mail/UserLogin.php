@@ -28,7 +28,7 @@ class UserLogin extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'مرحبًا بك في موقعنا',
+            subject: 'مرحبًا بك في sadadunion',
         );
     }
 
