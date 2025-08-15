@@ -554,7 +554,7 @@
                         وأرسل الأموال لأصدقائك بضغطة واحدة.
                     </p>
                     <div class="hero-buttons">
-                        <a href="#" class="btn btn-primary">
+                        <a target="_blank" href="https://play.google.com/store/apps/details?id=com.sadadunion.sadad_union" class="btn btn-primary">
                             <i class="fab fa-google-play"></i>
                             تحميل التطبيق
                         </a>
