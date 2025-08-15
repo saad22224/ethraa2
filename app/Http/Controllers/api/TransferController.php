@@ -24,6 +24,7 @@ class TransferController extends Controller
 
             $user_identifier = $request->user_identifier;
             $amount = $request->amount;
+            $amountaftertaxs = $amount - $amount * 0.01;
             $sender = auth()->user();
             if ($sender->user_identifier == $user_identifier) {
                 return response()->json(['error' => 'You cannot transfer to yourself'], 400);
@@ -49,17 +50,17 @@ class TransferController extends Controller
 
             $recipient = User::where('user_identifier', $user_identifier)->first();
 
-            $sender->balance -= $amount + $amount * 0.01;
+            $sender->balance -= $amount;
             $sender->save();
 
-            $recipient->balance += $amount;
+            $recipient->balance += $amountaftertaxs;
             $recipient->save();
 
             DB::commit();
             Transfer::create([
                 'sender_id' => $sender->id,
                 'recipient_id' => $recipient->id,
-                'amount' => $amount
+                'amount' => $amountaftertaxs
             ]);
             Log::info('Transfer successful', [
                 'from_user' => $sender->id,
@@ -71,18 +72,18 @@ class TransferController extends Controller
             try {
                 $service->sendNotification(
                     $recipient->id,
-                    "لقد تلقيت مدفوعات بقيمة {$amount} من {$sender->name}"
+                    "لقد تلقيت مدفوعات بقيمة {$amountaftertaxs} من {$sender->name}"
                 );
 
 
                 Notification::create([
                     'user_id' => $recipient->id,
-                    'body' => "لقد تلقيت مدفوعات بقيمة {$amount} من {$sender->name}"
+                    'body' => "لقد تلقيت مدفوعات بقيمة {$amountaftertaxs} من {$sender->name}"
 
                 ]);
                 Notification::create([
                     'user_id' => $sender->id,
-                    'body' => "لقد تم إرسال مدفوعات بقيمة {$amount} إلي {$recipient->name}"
+                    'body' => "لقد تم إرسال مدفوعات بقيمة {$amountaftertaxs} إلي {$recipient->name}"
 
                 ]);
                 Log::info('Notification sent', [

@@ -40,20 +40,21 @@ class TransactionController extends Controller
             if($user->balance < $request->amount) {
                 return response()->json(['error' => 'Insufficient balance'], 400);
             }
-            $user->balance -= $request->amount + $request->amount * 0.05;
+            $amountaftertaxs =  $request->amount - $request->amount * 0.05;
+            $user->balance -= $request->amount;
             $user->save();
 
             $user->transactions()->create([
                 'transaction_number' => $transaction_numnber,
                 'transaction_code' => $transaction_code,
                 'addresse' => $request->addresse,
-                'amount' => $request->amount,
+                'amount' => $amountaftertaxs,
             ]);
             DB::commit();
             return response()->json([
                 'message' => 'Transaction successful',
                 'user' => $user,
-                'amount' => $request->amount,
+                'amount' =>  "$amountaftertaxs",
                 'addresse' => $request->addresse,
                 'transaction_number' => $transaction_numnber,
                 'transaction_code' => $transaction_code,
